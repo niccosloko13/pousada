@@ -1,0 +1,190 @@
+{
+  "nome": "Pousada em Pedrinhas",
+  "slogan": "Seu refúgio acolhedor em Ilha Comprida",
+  "local": "Pedrinhas, Ilha Comprida - SP",
+  "endereco": "52 Rua Alípio Rosa de Oliveira, Ilha Comprida - SP, CEP 11925-000",
+  "descricao": "Hospedagem confortável em uma vila de pescadores tranquila, com piscina ao ar livre, atendimento atencioso e acesso à natureza do litoral sul.",
+  "link_google_maps": "https://maps.app.goo.gl/6KKtwnu5WcVBCkhL6",
+  "preco_base_diaria_casal": 135,
+  "cafe_da_manha_incluso": true,
+  "estrutura_modulos": {
+    "reservas": "pronto para integração",
+    "clientes": "base pronta para cadastro",
+    "pagamentos": "base pronta para checkout e gateway",
+    "admin": "base pronta para painel administrativo",
+    "disponibilidade": "base pronta para controle de inventário"
+  },
+  "nota": 9,
+  "avaliacoes": 5,
+  "destaques": [
+    "Piscina ao ar livre",
+    "Café da manhã",
+    "Estacionamento gratuito",
+    "Ar-condicionado",
+    "Ambiente tranquilo",
+    "Ótima localização"
+  ],
+  "comodidades": [
+    "Piscina ao ar livre",
+    "Estacionamento gratuito no local",
+    "Café da manhã",
+    "Cozinha equipada",
+    "Banheiro privativo",
+    "TV de tela plana",
+    "Frigobar",
+    "Ar-condicionado"
+  ],
+  "quartos": [
+    {
+      "id": 1,
+      "slug": "quarto-standard-pedrinhas",
+      "nome": "Quarto Standard Pedrinhas",
+      "descricao": "Acomodação confortável para casal ou pequena família, com estrutura completa para descanso.",
+      "capacidade": "2 a 3 hóspedes",
+      "tipo_de_cama": "1 cama de casal + 1 cama de solteiro",
+      "camas_extras_ou_observacao": "Algumas unidades podem receber cama extra sob consulta",
+      "preco_por_noite": 135,
+      "preco_modelo": "por_noite",
+      "cafe_da_manha_incluso": true,
+      "imagem_capa": "/quartos/cama.jpg",
+      "imagens": ["/quartos/cama.jpg", "/quartos/cozinha.jpg", "/quartos/banheiro.jpg"],
+      "comodidades": [
+        "Cama de casal",
+        "Cama de solteiro",
+        "Ar-condicionado",
+        "TV Smart",
+        "Wi-Fi",
+        "Frigobar",
+        "Mini cozinha",
+        "Banheiro privativo"
+      ],
+      "destaque": "Ideal para casais que buscam praticidade e conforto",
+      "tipo": "standard"
+    },
+    {
+      "id": 2,
+      "slug": "quarto-standard-terreo",
+      "nome": "Quarto Standard Térreo",
+      "descricao": "Unidade com acesso facilitado, perfeita para hóspedes que priorizam mobilidade e conforto.",
+      "capacidade": "2 a 3 hóspedes",
+      "tipo_de_cama": "1 cama de casal + 1 cama de solteiro",
+      "camas_extras_ou_observacao": "Localizado no térreo, com acesso prático",
+      "preco_por_noite": 135,
+      "preco_modelo": "por_noite",
+      "cafe_da_manha_incluso": true,
+      "imagem_capa": "/quartos/cama2.jpg",
+      "imagens": ["/quartos/cama2.jpg", "/quartos/cozinha2.jpg", "/quartos/banheiro2.jpg"],
+      "comodidades": [
+        "Cama de casal",
+        "Cama de solteiro",
+        "Ar-condicionado",
+        "TV Smart",
+        "Wi-Fi",
+        "Frigobar",
+        "Mini cozinha",
+        "Banheiro privativo"
+      ],
+      "destaque": "Excelente opção para quem prefere unidade térrea",
+      "tipo": "standard"
+    },
+    {
+      "id": 3,
+      "slug": "quarto-familia-pedrinhas",
+      "nome": "Quarto Família Pedrinhas",
+      "descricao": "Acomodação espaçosa para famílias, mantendo conforto e praticidade para estadias em grupo.",
+      "capacidade": "4 a 5 hóspedes",
+      "tipo_de_cama": "1 cama de casal + 1 cama de solteiro",
+      "camas_extras_ou_observacao": "Inclui camas adicionais, ideal para famílias com crianças",
+      "preco_por_noite": 135,
+      "preco_modelo": "por_noite",
+      "cafe_da_manha_incluso": true,
+      "imagem_capa": "/quartos/cama3.jpg",
+      "imagens": ["/quartos/cama3.jpg", "/quartos/cama4.jpg", "/quartos/area.jpg"],
+      "comodidades": [
+        "Cama de casal",
+        "Cama de solteiro",
+        "Camas adicionais",
+        "Ar-condicionado",
+        "TV Smart",
+        "Wi-Fi",
+        "Frigobar",
+        "Mini cozinha",
+        "Banheiro privativo"
+      ],
+      "destaque": "Ideal para descanso em família em Ilha Comprida",
+      "tipo": "familia"
+    },
+    {
+      "id": 4,
+      "slug": "casa-pedrinhas-grupos",
+      "nome": "Casa para Grupos em Pedrinhas",
+      "descricao": "Casa espaçosa para grupos e famílias em Pedrinhas, com estrutura completa para até 11 pessoas.",
+      "capacidade": "11 hóspedes",
+      "tipo_de_cama": "Configuração com cama de casal, cama de solteiro e camas adicionais",
+      "camas_extras_ou_observacao": "Ideal para famílias maiores e grupos com necessidade de mais camas",
+      "preco_por_noite": 1540,
+      "preco_por_pessoa": 140,
+      "preco_modelo": "por_pessoa",
+      "cafe_da_manha_incluso": false,
+      "quantidade_quartos": 3,
+      "quantidade_banheiros": 2,
+      "sala": true,
+      "cozinha_completa": true,
+      "varanda": true,
+      "imagem_capa": "/casa/sala.jpg",
+      "imagens": ["/casa/sala.jpg", "/casa/sala2.jpg", "/casa/cozinha.jpg", "/casa/quarto.jpg"],
+      "comodidades": [
+        "3 quartos",
+        "1 sala",
+        "Cozinha completa",
+        "Varanda",
+        "2 banheiros",
+        "Ar-condicionado",
+        "TV Smart",
+        "Wi-Fi",
+        "Geladeira"
+      ],
+      "destaque": "Casa completa para grupos com conforto e praticidade em Ilha Comprida",
+      "tipo": "casa"
+    }
+  ],
+  "galeria": [
+    "/fotos_pousada/pousada_001.jpg",
+    "/fotos_pousada/pousada_002.jpg",
+    "/fotos_pousada/pousada_003.jpg",
+    "/fotos_pousada/pousada_004.jpg",
+    "/fotos_pousada/pousada_005.jpg",
+    "/fotos_pousada/pousada_006.jpg"
+  ],
+  "depoimentos": [
+    {
+      "nome": "Giovanna",
+      "texto": "Tudo perfeito, atendimento maravilhoso e quarto muito limpo. Voltarei com certeza."
+    },
+    {
+      "nome": "Izabel",
+      "texto": "Tudo novo e limpinho. A equipe foi muito atenciosa com nossa necessidade de acesso térreo."
+    }
+  ],
+  "atracoes": [
+    "Praia de Ilha Comprida",
+    "Passeios de barco",
+    "Pesca esportiva",
+    "Trilhas e dunas",
+    "Pôr do sol no litoral"
+  ],
+  "imagens_por_secao": {
+    "hero": ["/fotos_pousada/pousada_001.jpg", "/fotos_pousada/pousada_007.jpg"],
+    "quartos": ["/quartos/cama.jpg", "/quartos/cama2.jpg", "/quartos/cama3.jpg", "/quartos/cozinha.jpg"],
+    "cafe_da_manha": ["/cafedamanha/cafedamanha.jpg", "/cafedamanha/cafedamanha2.jpg"],
+    "lazer": ["/lazer/piscina.jpg", "/lazer/piscina2.jpg"],
+    "locais": [
+      "/locais/deck.jpg",
+      "/locais/rio.jpg",
+      "/locais/golfinho.jpg",
+      "/locais/ostras.jpg",
+      "/locais/ostras2.jpg"
+    ],
+    "casa": ["/casa/sala.jpg", "/casa/cozinha.jpg", "/casa/quarto.jpg"]
+  }
+}

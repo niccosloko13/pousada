@@ -1,0 +1,53 @@
+import { AmenitiesSection } from "@/components/home/AmenitiesSection";
+import { AttractionsSection } from "@/components/home/AttractionsSection";
+import { BookingSearchBar } from "@/components/home/BookingSearchBar";
+import { FinalCTA } from "@/components/home/FinalCTA";
+import { GalleryPreview } from "@/components/home/GalleryPreview";
+import { GoogleReviewsSection } from "@/components/home/GoogleReviewsSection";
+import { Hero } from "@/components/home/Hero";
+import { Highlights } from "@/components/home/Highlights";
+import { EnhancedLocationSection } from "@/components/home/EnhancedLocationSection";
+import { RoomsPreview } from "@/components/home/RoomsPreview";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { StickyBookingBar } from "@/components/home/StickyBookingBar";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { CTAButton } from "@/components/ui/CTAButton";
+
+export default function HomePage() {
+  return (
+    <div className="min-h-screen bg-white">
+      <Header />
+      <StickyBookingBar />
+      <main className="pb-20 md:pb-0">
+        <section id="busca" className="bg-slate-950 px-4 pb-6 pt-5 md:px-6 md:pb-8">
+          <div className="mx-auto w-full max-w-7xl">
+            <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+              Reserva Online Imediata
+            </p>
+            <p className="mb-3 text-center text-sm font-medium text-cyan-100">
+              Melhor tarifa direta, confirmação rápida e atendimento da própria pousada.
+            </p>
+            <BookingSearchBar />
+          </div>
+        </section>
+        <Hero />
+        <Highlights />
+        <RoomsPreview />
+        <GalleryPreview />
+        <AmenitiesSection />
+        <AttractionsSection />
+        <EnhancedLocationSection />
+        <GoogleReviewsSection />
+        <TestimonialsSection />
+        <FinalCTA />
+      </main>
+      <div className="fixed bottom-3 left-3 right-3 z-40 md:hidden">
+        <CTAButton href="#busca" className="w-full py-3 text-sm font-extrabold shadow-xl">
+          Ver disponibilidade agora
+        </CTAButton>
+      </div>
+      <Footer />
+    </div>
+  );
+}
