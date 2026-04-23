@@ -9,6 +9,7 @@ import { formatCurrencyBRL } from "@/lib/reservation";
 import { prisma } from "@/lib/prisma";
 import type { PousadaData } from "@/types/pousada";
 import { LegalEntityMini } from "@/components/trust/TrustSealBand";
+import { COMPANY_WHATSAPP_E164 } from "@/lib/company";
 
 export const dynamic = "force-dynamic";
 
@@ -77,7 +78,7 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
   const reservationUi = reservationStatusLabel(reservation.status);
 
   const pousadaData = pousada as PousadaData;
-  const whatsappDigits = (process.env.NEXT_PUBLIC_WHATSAPP_E164 ?? "").replace(/\D/g, "");
+  const whatsappDigits = (process.env.NEXT_PUBLIC_WHATSAPP_E164 ?? COMPANY_WHATSAPP_E164).replace(/\D/g, "");
   const whatsappHref = whatsappDigits
     ? `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
         `Olá! Concluí minha reserva ${reservation.code}. Podem me ajudar com check-in?`,
@@ -224,7 +225,7 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
                 </a>
               ) : (
                 <p className="mt-3 text-xs text-emerald-950">
-                  Defina <span className="font-mono">NEXT_PUBLIC_WHATSAPP_E164</span> no <span className="font-mono">.env</span> (ex.: +5511999999999) para ativar o botão.
+                  Defina <span className="font-mono">NEXT_PUBLIC_WHATSAPP_E164</span> no <span className="font-mono">.env</span> para sobrescrever o padrão oficial.
                 </p>
               )}
             </article>

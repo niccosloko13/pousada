@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createMercadoPagoPreference } from "@/lib/mercadopago/preference";
 import { prisma } from "@/lib/prisma";
+import { ensureRoomsSeeded } from "@/lib/reservations/ensureRoomsSeeded";
 import { createFreeTestReservation, createPendingReservation } from "@/lib/reservations/engine";
 
 export const runtime = "nodejs";
@@ -39,6 +40,7 @@ function canUseFreeTestVoucher() {
 
 export async function POST(request: Request) {
   try {
+    await ensureRoomsSeeded();
     const json = await request.json();
     const data = bodySchema.parse(json);
     const voucher = normalizeVoucher(data.voucherCode);

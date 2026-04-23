@@ -8,6 +8,7 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { formatCurrencyBRL } from "@/lib/reservation";
 import { formatDateBRFromIso, isIsoDate, isValidIsoDateRange } from "@/lib/reservations/dateParams";
 import { checkAvailability } from "@/lib/reservations/engine";
+import { ensureRoomsSeeded } from "@/lib/reservations/ensureRoomsSeeded";
 import { computeStayPricing } from "@/lib/reservations/pricing";
 import { categoryLabel, categoryOrder, parseRoomMetadata, recommendRoomSlug } from "@/lib/reservations/roomPresentation";
 import { prisma } from "@/lib/prisma";
@@ -49,6 +50,7 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
   const checkinLabel = datesOk ? formatDateBRFromIso(checkinRaw) : checkinRaw || "Escolha na busca";
   const checkoutLabel = datesOk ? formatDateBRFromIso(checkoutRaw) : checkoutRaw || "Escolha na busca";
 
+  const seedState = await ensureRoomsSeeded();
   const rooms = await prisma.room.findMany({ orderBy: [{ name: "asc" }] });
   const totalGuests = Math.max(0, adultos) + Math.max(0, criancasFree) + Math.max(0, criancasHalf);
   const recommendedSlug = recommendRoomSlug({
@@ -106,6 +108,45 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
   const availableCount = availableRooms.length;
   const totalOptions = grouped.length;
   const primarySlug = availableRooms[0]?.room.slug ?? grouped[0]?.room.slug ?? "";
+  const capacityPassCount = grouped.filter((item) => item.fitsCapacity).length;
+  const availabilityPassCount = grouped.filter((item) => Boolean(item.availability?.available)).length;
+  const exclusionReasons = grouped.map((item) => {
+    const reasons: string[] = [];
+    if (!searchReady) reasons.push("invalid_or_missing_date_range");
+    if (!item.fitsCapacity) reasons.push("capacity_exceeded");
+    if (searchReady && !item.availability?.available) {
+      if (item.availability?.conflictingReservation) reasons.push("conflicting_reservation");
+      if (item.availability?.blocked) reasons.push("blocked_date");
+      if (!item.availability?.conflictingReservation && !item.availability?.blocked) reasons.push("unavailable_without_reason");
+    }
+
+    return {
+      roomSlug: item.room.slug,
+      roomName: item.room.name,
+      capacity: item.room.capacity,
+      fitsCapacity: item.fitsCapacity,
+      availability: item.availability?.available ?? null,
+      reasons: reasons.length ? reasons : ["included"],
+    };
+  });
+
+  console.info(
+    "[reserva] diagnostics",
+    JSON.stringify(
+      {
+        roomsLoaded: rooms.length,
+        seededNow: seedState.seeded,
+        totalGuests,
+        searchReady,
+        capacityPassCount,
+        availabilityPassCount,
+        availableCount,
+        exclusionReasons,
+      },
+      null,
+      2,
+    ),
+  );
 
   return (
     <div className="min-h-screen bg-slate-50">

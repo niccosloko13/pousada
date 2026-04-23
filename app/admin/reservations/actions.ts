@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdminSession } from "@/lib/adminAuth";
+import { writeAdminAuditLog } from "@/lib/adminAudit";
 import { prisma } from "@/lib/prisma";
 
 async function getLatestPayment(reservationId: string) {
@@ -11,6 +13,7 @@ async function getLatestPayment(reservationId: string) {
 }
 
 export async function confirmReservationAction(formData: FormData) {
+  const session = await requireAdminSession();
   const reservationId = String(formData.get("reservationId") ?? "");
   const reservation = await prisma.reservation.findUnique({ where: { id: reservationId } });
   if (!reservation) throw new Error("NOT_FOUND");
@@ -24,6 +27,12 @@ export async function confirmReservationAction(formData: FormData) {
     where: { id: reservation.id },
     data: { status: "CONFIRMED", expiresAt: null },
   });
+  await writeAdminAuditLog({
+    adminUserId: session.userId,
+    action: "admin.reservation.confirmed",
+    resource: "reservation",
+    metadata: { reservationId },
+  });
 
   revalidatePath("/admin");
   revalidatePath("/admin/reservas");
@@ -31,6 +40,7 @@ export async function confirmReservationAction(formData: FormData) {
 }
 
 export async function cancelReservationAction(formData: FormData) {
+  const session = await requireAdminSession();
   const reservationId = String(formData.get("reservationId") ?? "");
   const reservation = await prisma.reservation.findUnique({ where: { id: reservationId } });
   if (!reservation) throw new Error("NOT_FOUND");
@@ -53,6 +63,12 @@ export async function cancelReservationAction(formData: FormData) {
       });
     }
   });
+  await writeAdminAuditLog({
+    adminUserId: session.userId,
+    action: "admin.reservation.cancelled",
+    resource: "reservation",
+    metadata: { reservationId },
+  });
 
   revalidatePath("/admin");
   revalidatePath("/admin/reservas");
@@ -61,6 +77,7 @@ export async function cancelReservationAction(formData: FormData) {
 }
 
 export async function checkInReservationAction(formData: FormData) {
+  const session = await requireAdminSession();
   const reservationId = String(formData.get("reservationId") ?? "");
   const reservation = await prisma.reservation.findUnique({ where: { id: reservationId } });
   if (!reservation) throw new Error("NOT_FOUND");
@@ -70,6 +87,12 @@ export async function checkInReservationAction(formData: FormData) {
     where: { id: reservation.id },
     data: { status: "CHECKED_IN" },
   });
+  await writeAdminAuditLog({
+    adminUserId: session.userId,
+    action: "admin.reservation.checkin",
+    resource: "reservation",
+    metadata: { reservationId },
+  });
 
   revalidatePath("/admin");
   revalidatePath("/admin/reservas");
@@ -77,6 +100,7 @@ export async function checkInReservationAction(formData: FormData) {
 }
 
 export async function checkOutReservationAction(formData: FormData) {
+  const session = await requireAdminSession();
   const reservationId = String(formData.get("reservationId") ?? "");
   const reservation = await prisma.reservation.findUnique({ where: { id: reservationId } });
   if (!reservation) throw new Error("NOT_FOUND");
@@ -85,6 +109,12 @@ export async function checkOutReservationAction(formData: FormData) {
   await prisma.reservation.update({
     where: { id: reservation.id },
     data: { status: "CHECKED_OUT" },
+  });
+  await writeAdminAuditLog({
+    adminUserId: session.userId,
+    action: "admin.reservation.checkout",
+    resource: "reservation",
+    metadata: { reservationId },
   });
 
   revalidatePath("/admin");

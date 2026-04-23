@@ -5,6 +5,7 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import pousada from "@/data/pousada.json";
 import { prisma } from "@/lib/prisma";
 import { isIsoDate, isValidIsoDateRange } from "@/lib/reservations/dateParams";
+import { ensureRoomsSeeded } from "@/lib/reservations/ensureRoomsSeeded";
 import { computeStayPricing } from "@/lib/reservations/pricing";
 import type { PousadaData } from "@/types/pousada";
 import { CheckoutClient } from "./CheckoutClient";
@@ -29,6 +30,7 @@ function parseGuests(value: string, fallback: number, min = 0) {
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
   const pousadaData = pousada as PousadaData;
   const params = await searchParams;
+  await ensureRoomsSeeded();
 
   const quartoSlug = getParam(params.quarto, getParam(params.roomSlug, ""));
   const roomId = getParam(params.roomId, "");
