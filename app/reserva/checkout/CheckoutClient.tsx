@@ -133,10 +133,16 @@ export function CheckoutClient(props: CheckoutClientProps) {
       if (!response.ok || !json.ok || (!json.checkoutUrl && !json.completionUrl)) {
         if (json.error === "ROOM_NOT_AVAILABLE") {
           setError("Este quarto acabou de ser reservado para essas datas. Volte e escolha outra acomodação.");
+        } else if (json.error === "ROOM_INACTIVE") {
+          setError("Esta acomodação não está mais disponível para novas reservas.");
         } else if (json.error === "INVALID_DATE_RANGE") {
           setError("Período inválido: o check-out precisa ser depois do check-in.");
         } else if (json.error === "ROOM_CAPACITY_EXCEEDED") {
           setError("A quantidade de hóspedes excede a capacidade do quarto selecionado.");
+        } else if (json.error === "HOUSE_MIN_GUESTS") {
+          setError("A casa exige mínimo de 10 pessoas.");
+        } else if (json.error === "HOUSE_MIN_NIGHTS") {
+          setError("A casa exige estadia mínima de 2 diárias.");
         } else if (json.error === "MP_NOT_CONFIGURED") {
           setError("Mercado Pago não está configurado neste ambiente. Para testar fluxo completo, aplique o voucher GRÁTIS.");
         } else {
@@ -491,7 +497,9 @@ export function CheckoutClient(props: CheckoutClientProps) {
                 Café da manhã incluso
               </p>
             ) : (
-              <p className="mt-2 text-xs font-semibold text-slate-700">Casa para aluguel: café da manhã não incluso (modelo por pessoa)</p>
+              <p className="mt-2 text-xs font-semibold text-slate-700">
+                Casa para grupos: R$ 100 por pessoa/noite, mínimo de 10 pessoas e 2 diárias (café da manhã não incluso)
+              </p>
             )}
 
             <p className="mt-2 text-xs text-slate-600">

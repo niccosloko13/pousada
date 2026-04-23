@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { AdminReservationActions } from "@/app/admin/reservations/AdminReservationActions";
 import { prisma } from "@/lib/prisma";
 import { formatCurrencyBRL } from "@/lib/reservation";
+import { HOUSE_MIN_GUESTS, HOUSE_MIN_NIGHTS, HOUSE_PRICE_PER_PERSON, isHouseCategory } from "@/lib/reservations/businessRules";
 
 export const dynamic = "force-dynamic";
 
@@ -110,6 +111,11 @@ export default async function AdminReservaDetalhePage({ params }: Props) {
             {reservation.notes ? (
               <p>
                 <span className="font-semibold text-slate-900">Observações:</span> {reservation.notes}
+              </p>
+            ) : null}
+            {isHouseCategory(reservation.room.category) ? (
+              <p className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-900">
+                Regra da casa: mínimo de {HOUSE_MIN_GUESTS} pessoas, mínimo de {HOUSE_MIN_NIGHTS} diárias, R$ {HOUSE_PRICE_PER_PERSON}/pessoa/noite.
               </p>
             ) : null}
           </div>

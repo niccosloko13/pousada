@@ -9,11 +9,13 @@ import { formatCurrencyBRL } from "@/lib/reservation";
 import { formatDateBRFromIso, isIsoDate, isValidIsoDateRange } from "@/lib/reservations/dateParams";
 import { checkAvailability } from "@/lib/reservations/engine";
 import { ensureRoomsSeeded } from "@/lib/reservations/ensureRoomsSeeded";
+import { HOUSE_MIN_GUESTS, HOUSE_MIN_NIGHTS, validateHouseRules } from "@/lib/reservations/businessRules";
 import { computeStayPricing } from "@/lib/reservations/pricing";
 import { categoryLabel, categoryOrder, parseRoomMetadata, recommendRoomSlug } from "@/lib/reservations/roomPresentation";
 import { prisma } from "@/lib/prisma";
 import { TrustSealBand } from "@/components/trust/TrustSealBand";
 import { COMPANY_CNPJ, COMPANY_LEGAL_NAME } from "@/lib/company";
+import { logDebug } from "@/lib/security/logger";
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +53,10 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
   const checkoutLabel = datesOk ? formatDateBRFromIso(checkoutRaw) : checkoutRaw || "Escolha na busca";
 
   const seedState = await ensureRoomsSeeded();
-  const rooms = await prisma.room.findMany({ orderBy: [{ name: "asc" }] });
+  const rooms = await prisma.room.findMany({
+    where: { isActive: true },
+    orderBy: [{ name: "asc" }],
+  });
   const totalGuests = Math.max(0, adultos) + Math.max(0, criancasFree) + Math.max(0, criancasHalf);
   const recommendedSlug = recommendRoomSlug({
     rooms,
@@ -74,7 +79,9 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
         searchReady && checkinAt && checkoutAt ? await checkAvailability(room.id, { checkin: checkinAt, checkout: checkoutAt }) : null;
 
       const fitsCapacity = totalGuests <= room.capacity;
-      const isAvailable = Boolean(availability?.available && fitsCapacity);
+      const houseRules = validateHouseRules({ category: room.category, totalGuests, nights: pricing?.nights ?? 0 });
+      const passesBusinessRules = houseRules.ok;
+      const isAvailable = Boolean(availability?.available && fitsCapacity && passesBusinessRules);
       const isRecommended = recommendedSlug === room.slug;
 
       return {
@@ -85,6 +92,8 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
         pricing,
         availability,
         fitsCapacity,
+        houseRules,
+        passesBusinessRules,
         isAvailable,
         isRecommended,
       };
@@ -114,6 +123,8 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
     const reasons: string[] = [];
     if (!searchReady) reasons.push("invalid_or_missing_date_range");
     if (!item.fitsCapacity) reasons.push("capacity_exceeded");
+    if (!item.passesBusinessRules && item.houseRules.reason === "HOUSE_MIN_GUESTS") reasons.push("house_min_guests");
+    if (!item.passesBusinessRules && item.houseRules.reason === "HOUSE_MIN_NIGHTS") reasons.push("house_min_nights");
     if (searchReady && !item.availability?.available) {
       if (item.availability?.conflictingReservation) reasons.push("conflicting_reservation");
       if (item.availability?.blocked) reasons.push("blocked_date");
@@ -130,23 +141,16 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
     };
   });
 
-  console.info(
-    "[reserva] diagnostics",
-    JSON.stringify(
-      {
-        roomsLoaded: rooms.length,
-        seededNow: seedState.seeded,
-        totalGuests,
-        searchReady,
-        capacityPassCount,
-        availabilityPassCount,
-        availableCount,
-        exclusionReasons,
-      },
-      null,
-      2,
-    ),
-  );
+  logDebug("reserva.diagnostics", {
+    roomsLoaded: rooms.length,
+    seededNow: seedState.seeded,
+    totalGuests,
+    searchReady,
+    capacityPassCount,
+    availabilityPassCount,
+    availableCount,
+    exclusionReasons,
+  });
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -203,6 +207,9 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
               </li>
               <li>
                 <span className="font-semibold text-slate-900">13+:</span> tarifa de adulto.
+              </li>
+              <li>
+                <span className="font-semibold text-slate-900">Casa para grupos:</span> mínimo de {HOUSE_MIN_GUESTS} pessoas e {HOUSE_MIN_NIGHTS} diárias.
               </li>
             </ul>
             <p className="mt-2 text-xs text-slate-600">
@@ -360,6 +367,10 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
                                 <span className="font-semibold text-slate-900">Disponibilidade:</span>{" "}
                                 {!datesOk ? (
                                   <span className="text-slate-700">informe datas válidas</span>
+                                ) : !item.passesBusinessRules && item.houseRules.reason === "HOUSE_MIN_GUESTS" ? (
+                                  <span className="font-semibold text-rose-800">casa exige mínimo de {HOUSE_MIN_GUESTS} pessoas</span>
+                                ) : !item.passesBusinessRules && item.houseRules.reason === "HOUSE_MIN_NIGHTS" ? (
+                                  <span className="font-semibold text-rose-800">casa exige mínimo de {HOUSE_MIN_NIGHTS} diárias</span>
                                 ) : !fitsCapacity ? (
                                   <span className="font-semibold text-rose-800">grupo acima da capacidade</span>
                                 ) : availability?.available ? (
@@ -401,6 +412,10 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
                                 <p className="text-xs text-slate-600">O checkout exige datas no formato AAAA-MM-DD.</p>
                               ) : !fitsCapacity ? (
                                 <p className="text-xs text-rose-800">Ajuste o número de hóspedes ou escolha uma categoria maior.</p>
+                              ) : !item.passesBusinessRules && item.houseRules.reason === "HOUSE_MIN_GUESTS" ? (
+                                <p className="text-xs text-rose-800">Casa para grupos: mínimo de {HOUSE_MIN_GUESTS} pessoas.</p>
+                              ) : !item.passesBusinessRules && item.houseRules.reason === "HOUSE_MIN_NIGHTS" ? (
+                                <p className="text-xs text-rose-800">Casa para grupos: mínimo de {HOUSE_MIN_NIGHTS} diárias.</p>
                               ) : !availability?.available ? (
                                 <p className="text-xs text-rose-800">Indisponível (reserva em andamento, confirmada ou bloqueio administrativo).</p>
                               ) : (

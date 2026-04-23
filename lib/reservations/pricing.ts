@@ -1,5 +1,6 @@
 import type { Room } from "@prisma/client";
 import { calcularNoites } from "@/lib/reservation";
+import { HOUSE_PRICE_PER_PERSON, isHouseCategory } from "@/lib/reservations/businessRules";
 
 export type StayBreakdown = {
   nights: number;
@@ -28,16 +29,19 @@ export function computeStayPricing(
   const model = room.pricingModel === "por_pessoa" ? "por_pessoa" : "por_noite";
 
   if (model === "por_pessoa") {
-    const perPerson = Number(room.pricePerPerson ?? 0);
+    const totalGuests = adults + childrenFree + childrenHalf;
+    const perPerson = isHouseCategory(room.category) ? HOUSE_PRICE_PER_PERSON : Number(room.pricePerPerson ?? 0);
     const adultsTotal = perPerson * adults * nights;
-    const childrenHalfTotal = perPerson * 0.5 * childrenHalf * nights;
-    const childrenFreeTotal = 0;
-    const subtotal = adultsTotal + childrenHalfTotal;
+    const childrenHalfTotal = isHouseCategory(room.category) ? perPerson * childrenHalf * nights : perPerson * 0.5 * childrenHalf * nights;
+    const childrenFreeTotal = isHouseCategory(room.category) ? perPerson * childrenFree * nights : 0;
+    const subtotal = isHouseCategory(room.category)
+      ? perPerson * totalGuests * nights
+      : adultsTotal + childrenHalfTotal;
 
     return {
       nights,
       pricingModel: "por_pessoa",
-      baseUnitLabel: "Tarifa por pessoa",
+      baseUnitLabel: isHouseCategory(room.category) ? "Tarifa por pessoa (casa)" : "Tarifa por pessoa",
       baseUnitAmount: perPerson,
       adults,
       childrenFree,

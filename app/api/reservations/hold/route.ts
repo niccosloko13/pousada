@@ -4,6 +4,9 @@ import { createMercadoPagoPreference } from "@/lib/mercadopago/preference";
 import { prisma } from "@/lib/prisma";
 import { ensureRoomsSeeded } from "@/lib/reservations/ensureRoomsSeeded";
 import { createFreeTestReservation, createPendingReservation } from "@/lib/reservations/engine";
+import { logSecurityEvent } from "@/lib/security/logger";
+import { consumeRateLimit } from "@/lib/security/rateLimit";
+import { getClientIp, isTrustedOrigin } from "@/lib/security/request";
 
 export const runtime = "nodejs";
 
@@ -40,6 +43,24 @@ function canUseFreeTestVoucher() {
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const originOk = isTrustedOrigin(request);
+    if (!originOk) {
+      logSecurityEvent("reservation.hold.invalid_origin", { ip });
+      return NextResponse.json({ ok: false, error: "INVALID_ORIGIN" }, { status: 403 });
+    }
+
+    const rate = await consumeRateLimit({
+      scope: "reservation_hold",
+      identifier: ip,
+      limit: 30,
+      windowMs: 10 * 60 * 1000,
+      blockMs: 10 * 60 * 1000,
+    });
+    if (!rate.ok) {
+      return NextResponse.json({ ok: false, error: "RATE_LIMITED", retryAfterMs: rate.retryAfterMs }, { status: 429 });
+    }
+
     await ensureRoomsSeeded();
     const json = await request.json();
     const data = bodySchema.parse(json);
@@ -64,7 +85,7 @@ export async function POST(request: Request) {
         mode: "test_free",
         reservationCode: reservation.code,
         reservationId: reservation.id,
-        completionUrl: `/reserva/sucesso?code=${encodeURIComponent(reservation.code)}&status=test_free`,
+        completionUrl: `/reserva/sucesso?code=${encodeURIComponent(reservation.code)}&status=test_free&t=${encodeURIComponent(reservation.publicAccessToken ?? "")}`,
       });
     }
 
@@ -84,6 +105,7 @@ export async function POST(request: Request) {
       title: `Reserva ${reservation.code} - ${room.name}`,
       amount: Number(reservation.amountTotal),
       reservationCode: reservation.code,
+      reservationAccessToken: reservation.publicAccessToken ?? "",
       payerEmail: data.guest.email,
       payerName: data.guest.name,
     });
@@ -115,11 +137,20 @@ export async function POST(request: Request) {
     if (message === "ROOM_NOT_AVAILABLE") {
       return NextResponse.json({ ok: false, error: "ROOM_NOT_AVAILABLE" }, { status: 409 });
     }
+    if (message === "ROOM_INACTIVE") {
+      return NextResponse.json({ ok: false, error: "ROOM_INACTIVE" }, { status: 400 });
+    }
     if (message === "INVALID_DATE_RANGE") {
       return NextResponse.json({ ok: false, error: "INVALID_DATE_RANGE" }, { status: 400 });
     }
     if (message === "ROOM_CAPACITY_EXCEEDED") {
       return NextResponse.json({ ok: false, error: "ROOM_CAPACITY_EXCEEDED" }, { status: 400 });
+    }
+    if (message === "HOUSE_MIN_GUESTS") {
+      return NextResponse.json({ ok: false, error: "HOUSE_MIN_GUESTS" }, { status: 400 });
+    }
+    if (message === "HOUSE_MIN_NIGHTS") {
+      return NextResponse.json({ ok: false, error: "HOUSE_MIN_NIGHTS" }, { status: 400 });
     }
 
     if (message === "MERCADOPAGO_ACCESS_TOKEN_MISSING") {

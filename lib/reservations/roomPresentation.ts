@@ -39,7 +39,7 @@ export function recommendRoomSlug(input: {
     if (fits) score += 1000;
     score -= Math.abs(headroom) * 5;
 
-    if (room.category === "casa" && input.totalGuests >= 7) score += 120;
+    if (room.category === "casa" && input.totalGuests >= 10) score += 120;
     if (room.category === "familia" && input.totalGuests >= 4) score += 90;
     if (room.category === "casal" && input.totalGuests <= 3) score += 70;
 
@@ -47,7 +47,7 @@ export function recommendRoomSlug(input: {
     if (input.childrenFree >= 2 && room.category === "familia") score += 40;
 
     // discourage "casa" for very small groups unless capacity forces it
-    if (room.category === "casa" && input.totalGuests <= 3) score -= 80;
+    if (room.category === "casa" && input.totalGuests < 10) score -= 120;
 
     // discourage tight fits
     if (fits && headroom === 0) score -= 10;

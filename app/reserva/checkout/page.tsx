@@ -6,6 +6,7 @@ import pousada from "@/data/pousada.json";
 import { prisma } from "@/lib/prisma";
 import { isIsoDate, isValidIsoDateRange } from "@/lib/reservations/dateParams";
 import { ensureRoomsSeeded } from "@/lib/reservations/ensureRoomsSeeded";
+import { HOUSE_MIN_GUESTS, HOUSE_MIN_NIGHTS, isHouseCategory, validateHouseRules } from "@/lib/reservations/businessRules";
 import { computeStayPricing } from "@/lib/reservations/pricing";
 import type { PousadaData } from "@/types/pousada";
 import { CheckoutClient } from "./CheckoutClient";
@@ -78,15 +79,15 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     : roomId
       ? await prisma.room.findUnique({ where: { id: roomId } })
       : null;
-  if (!room) {
+  if (!room || !room.isActive) {
     return (
       <div className="min-h-screen bg-slate-50">
         <Header />
         <main className="mx-auto w-full max-w-4xl px-4 py-10 md:px-6 md:py-14">
           <SectionTitle
             eyebrow="Checkout"
-            title="Acomodação não encontrada"
-            subtitle="A acomodação selecionada não foi localizada. Volte para escolher uma opção disponível."
+            title="Acomodação indisponível"
+            subtitle="A acomodação selecionada não está disponível para novas reservas. Volte para escolher uma opção ativa."
           />
           <div className="mt-6">
             <Link
@@ -103,7 +104,45 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   }
 
   const breakdown = computeStayPricing(room, checkin, checkout, adultos, criancasFree, criancasHalf);
-  const pricingModelLabel = breakdown.pricingModel === "por_pessoa" ? "Modelo de preço por pessoa (grupo)" : "Modelo de preço por diária";
+  const houseRule = validateHouseRules({
+    category: room.category,
+    totalGuests: adultos + criancasFree + criancasHalf,
+    nights: breakdown.nights,
+  });
+  if (!houseRule.ok) {
+    const message =
+      houseRule.reason === "HOUSE_MIN_GUESTS"
+        ? `A casa para grupos exige no mínimo ${HOUSE_MIN_GUESTS} pessoas.`
+        : `A casa para grupos exige no mínimo ${HOUSE_MIN_NIGHTS} diárias.`;
+    return (
+      <div className="min-h-screen bg-slate-50">
+        <Header />
+        <main className="mx-auto w-full max-w-4xl px-4 py-10 md:px-6 md:py-14">
+          <SectionTitle eyebrow="Checkout" title="Regras da casa para grupos" subtitle={message} />
+          <section className="mt-6 rounded-3xl border border-amber-200 bg-amber-50 p-6">
+            <p className="text-sm text-amber-900">
+              Regras operacionais: mínimo de {HOUSE_MIN_GUESTS} pessoas, mínimo de {HOUSE_MIN_NIGHTS} diárias e tarifa de R$ 100 por pessoa por noite.
+            </p>
+            <div className="mt-4">
+              <Link
+                href={`/reserva?destino=${encodeURIComponent(destino)}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&adultos=${adultos}&criancasFree=${criancasFree}&criancasHalf=${criancasHalf}&quartos=${encodeURIComponent(quartos)}`}
+                className="inline-flex h-11 items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white hover:bg-slate-800"
+              >
+                Voltar para resultados
+              </Link>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+  const pricingModelLabel =
+    breakdown.pricingModel === "por_pessoa"
+      ? isHouseCategory(room.category)
+        ? `Casa para grupos: R$ 100 por pessoa por noite (mínimo ${HOUSE_MIN_GUESTS} pessoas e ${HOUSE_MIN_NIGHTS} diárias)`
+        : "Modelo de preço por pessoa (grupo)"
+      : "Modelo de preço por diária";
 
   const mercadoPagoPublicKey = process.env.MERCADOPAGO_PUBLIC_KEY || process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY;
 

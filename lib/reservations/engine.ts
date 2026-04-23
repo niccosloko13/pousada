@@ -1,5 +1,7 @@
 import { Prisma, ReservationStatus } from "@prisma/client";
+import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { validateHouseRules } from "@/lib/reservations/businessRules";
 import { computeStayPricing } from "@/lib/reservations/pricing";
 
 type DateRange = {
@@ -85,6 +87,7 @@ export async function createPendingReservation(input: {
 
   const room = await prisma.room.findUnique({ where: { slug: input.roomSlug } });
   if (!room) throw new Error("ROOM_NOT_FOUND");
+  if (!room.isActive) throw new Error("ROOM_INACTIVE");
 
   const checkinAt = new Date(`${input.checkin}T15:00:00`);
   const checkoutAt = new Date(`${input.checkout}T11:00:00`);
@@ -103,17 +106,44 @@ export async function createPendingReservation(input: {
   }
 
   const pricing = computeStayPricing(room, input.checkin, input.checkout, input.adults, input.childrenFree, input.childrenHalf);
+  const houseRules = validateHouseRules({
+    category: room.category,
+    totalGuests,
+    nights: pricing.nights,
+  });
+  if (!houseRules.ok) {
+    if (houseRules.reason === "HOUSE_MIN_GUESTS") throw new Error("HOUSE_MIN_GUESTS");
+    if (houseRules.reason === "HOUSE_MIN_NIGHTS") throw new Error("HOUSE_MIN_NIGHTS");
+  }
 
   const expiresAt = new Date(Date.now() + (input.holdMinutes ?? 20) * 60 * 1000);
 
-  const code = `PP-${Date.now().toString(36).toUpperCase()}`;
+  const code = createSecureReservationCode();
+  const publicAccessToken = crypto.randomBytes(24).toString("hex");
 
   return prisma.$transaction(
     async (tx) => {
-    const availabilityTx = await checkAvailability(room.id, { checkin: checkinAt, checkout: checkoutAt });
-    if (!availabilityTx.available) {
-      throw new Error("ROOM_NOT_AVAILABLE");
-    }
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${room.id}))`;
+    const conflictingReservation = await tx.reservation.findFirst({
+      where: {
+        roomId: room.id,
+        status: { in: ["PENDING_PAYMENT", "CONFIRMED", "CHECKED_IN"] },
+        checkinAt: { lt: checkoutAt },
+        checkoutAt: { gt: checkinAt },
+      },
+      select: { id: true },
+    });
+    if (conflictingReservation) throw new Error("ROOM_NOT_AVAILABLE");
+
+    const blockedRange = await tx.blockedDate.findFirst({
+      where: {
+        roomId: room.id,
+        startDate: { lt: checkoutAt },
+        endDate: { gt: checkinAt },
+      },
+      select: { id: true },
+    });
+    if (blockedRange) throw new Error("ROOM_NOT_AVAILABLE");
 
     const customer = await tx.customer.upsert({
       where: { email: input.guest.email },
@@ -133,6 +163,7 @@ export async function createPendingReservation(input: {
     const reservation = await tx.reservation.create({
       data: {
         code,
+        publicAccessToken,
         roomId: room.id,
         customerId: customer.id,
         checkinAt,
@@ -176,6 +207,10 @@ export async function createPendingReservation(input: {
       timeout: 15_000,
     },
   );
+}
+
+function createSecureReservationCode() {
+  return `PP-${crypto.randomBytes(5).toString("base64url").toUpperCase()}`;
 }
 
 export async function createFreeTestReservation(input: {

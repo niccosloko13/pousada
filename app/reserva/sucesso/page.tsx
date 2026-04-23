@@ -22,6 +22,20 @@ function pick(value: string | string[] | undefined) {
   return value;
 }
 
+function maskEmail(email: string) {
+  const [name, domain] = email.split("@");
+  if (!name || !domain) return "não informado";
+  const visible = name.slice(0, 2);
+  return `${visible}${"*".repeat(Math.max(2, name.length - 2))}@${domain}`;
+}
+
+function maskPhone(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  if (!digits) return "não informado";
+  if (digits.length <= 4) return `***${digits}`;
+  return `*** *** ${digits.slice(-4)}`;
+}
+
 function formatDateTimeBR(date: Date) {
   return new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
@@ -53,6 +67,7 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const code = pick(params.code);
   const mpStatus = pick(params.status);
+  const token = pick(params.t);
 
   if (!code) notFound();
 
@@ -66,6 +81,7 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
   });
 
   if (!reservation) notFound();
+  const hasValidAccessToken = Boolean(token && reservation.publicAccessToken && token === reservation.publicAccessToken);
 
   const payment = reservation.payments[0] ?? null;
   const breakdown = reservation.breakdown as Record<string, unknown> | null;
@@ -140,7 +156,7 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
                 <span className="font-semibold text-slate-900">Hóspede:</span> {reservation.customer.name}
               </p>
               <p>
-                <span className="font-semibold text-slate-900">Contato:</span> {reservation.customer.email} · {reservation.customer.phone}
+                <span className="font-semibold text-slate-900">Contato:</span> {maskEmail(reservation.customer.email)} · {maskPhone(reservation.customer.phone)}
               </p>
               <p>
                 <span className="font-semibold text-slate-900">Acomodação:</span> {reservation.room.name}
@@ -171,6 +187,11 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
                   <span className="font-semibold text-slate-900">Pagamento:</span> Isento para fluxo de teste (voucher GRÁTIS)
                 </p>
               ) : null}
+              {!hasValidAccessToken ? (
+                <p className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-900">
+                  Visualização parcial por segurança. Use o link completo da reserva para visualizar todos os detalhes.
+                </p>
+              ) : null}
             </div>
 
             <div className="mt-6 rounded-2xl border border-cyan-200 bg-cyan-50 p-4">
@@ -187,7 +208,7 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
-                href={`/reserva/sucesso?code=${encodeURIComponent(reservation.code)}`}
+                href={`/reserva/sucesso?code=${encodeURIComponent(reservation.code)}${hasValidAccessToken ? `&t=${encodeURIComponent(token ?? "")}` : ""}`}
                 className="inline-flex h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-bold text-slate-900 hover:bg-slate-50"
               >
                 Atualizar status

@@ -82,6 +82,7 @@ model Room {
   category    String
   capacity    Int
   bedSummary  String
+  isActive    Boolean  @default(true)
 
   pricingModel String // por_noite | por_pessoa
   pricePerNight Decimal? @db.Decimal(10, 2)
@@ -95,6 +96,8 @@ model Room {
 
   reservations Reservation[]
   blockedDates BlockedDate[]
+
+  @@index([isActive, category])
 }
 
 model BlockedDate {
@@ -112,6 +115,7 @@ model BlockedDate {
 model Reservation {
   id        String   @id @default(cuid())
   code      String   @unique
+  publicAccessToken String? @unique
 
   channel Channel @default(DIRECT_WEB)
   externalId String?
@@ -150,6 +154,19 @@ model Reservation {
 
   @@index([roomId, checkinAt, checkoutAt])
   @@index([status, expiresAt])
+}
+
+model RateLimitBucket {
+  key         String   @id
+  scope       String
+  count       Int
+  resetAt     DateTime
+  blockedUntil DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([scope, resetAt])
+  @@index([blockedUntil])
 }
 
 model ReservationGuest {

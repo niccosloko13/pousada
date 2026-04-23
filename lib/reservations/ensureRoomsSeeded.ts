@@ -2,6 +2,7 @@ import pousada from "@/data/pousada.json";
 import { prisma } from "@/lib/prisma";
 
 let seedInFlight: Promise<void> | null = null;
+let syncChecked = false;
 
 function parseCapacity(capacity: string) {
   const match = capacity.match(/(\d+)/g);
@@ -11,7 +12,9 @@ function parseCapacity(capacity: string) {
 }
 
 async function seedRoomsFromCatalog() {
+  const catalogSlugs: string[] = [];
   for (const room of pousada.quartos) {
+    catalogSlugs.push(room.slug);
     const category = room.tipo === "casa" ? "casa" : room.tipo === "familia" ? "familia" : "casal";
     const pricingModel = room.preco_modelo === "por_pessoa" ? "por_pessoa" : "por_noite";
 
@@ -24,6 +27,7 @@ async function seedRoomsFromCatalog() {
         category,
         capacity: parseCapacity(room.capacidade),
         bedSummary: room.tipo_de_cama,
+        isActive: true,
         pricingModel,
         pricePerNight: pricingModel === "por_pessoa" ? null : room.preco_por_noite,
         pricePerPerson: pricingModel === "por_pessoa" ? (room.preco_por_pessoa ?? 140) : null,
@@ -46,6 +50,7 @@ async function seedRoomsFromCatalog() {
         category,
         capacity: parseCapacity(room.capacidade),
         bedSummary: room.tipo_de_cama,
+        isActive: true,
         pricingModel,
         pricePerNight: pricingModel === "por_pessoa" ? null : room.preco_por_noite,
         pricePerPerson: pricingModel === "por_pessoa" ? (room.preco_por_pessoa ?? 140) : null,
@@ -64,18 +69,32 @@ async function seedRoomsFromCatalog() {
       },
     });
   }
+
+  await prisma.room.updateMany({
+    where: {
+      slug: { notIn: catalogSlugs },
+    },
+    data: {
+      isActive: false,
+    },
+  });
 }
 
 export async function ensureRoomsSeeded() {
   const count = await prisma.room.count();
-  if (count > 0) return { seeded: false, count };
+  const catalogCount = pousada.quartos.length;
+  const needsSync = count === 0 || count !== catalogCount || !syncChecked;
+
+  if (!needsSync) return { seeded: false, count };
 
   if (!seedInFlight) {
     seedInFlight = seedRoomsFromCatalog();
   }
 
   await seedInFlight;
+  seedInFlight = null;
+  syncChecked = true;
   const finalCount = await prisma.room.count();
-  console.warn(`[reservations] Room catalog auto-seeded because database was empty. Loaded rooms: ${finalCount}`);
+  console.warn(`[reservations] Room catalog synchronized. Loaded rooms: ${finalCount}`);
   return { seeded: true, count: finalCount };
 }

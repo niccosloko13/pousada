@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "MISSING_FIELDS" }, { status: 400 });
   }
 
-  const limit = assertAdminLoginRateLimit(ip, email);
+  const limit = await assertAdminLoginRateLimit(ip, email);
   if (!limit.ok) {
     await writeAdminAuditLog({
       action: "admin.login.blocked",
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  clearAdminLoginAttempts(ip, email);
+  await clearAdminLoginAttempts(ip, email);
   const token = await createAdminSessionToken({ userId: user.id, email: user.email });
   await setAdminSessionCookie(token);
   await writeAdminAuditLog({

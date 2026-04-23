@@ -4,6 +4,7 @@ export type CreatePreferenceInput = {
   title: string;
   amount: number;
   reservationCode: string;
+  reservationAccessToken: string;
   payerEmail: string;
   payerName: string;
 };
@@ -43,9 +44,9 @@ export async function createMercadoPagoPreference(input: CreatePreferenceInput) 
       installments: 12,
     },
     back_urls: {
-      success: `${appUrl}/reserva/sucesso?code=${encodeURIComponent(input.reservationCode)}`,
+      success: `${appUrl}/reserva/sucesso?code=${encodeURIComponent(input.reservationCode)}&t=${encodeURIComponent(input.reservationAccessToken)}`,
       failure: `${appUrl}/reserva/checkout?status=failure&code=${encodeURIComponent(input.reservationCode)}`,
-      pending: `${appUrl}/reserva/sucesso?code=${encodeURIComponent(input.reservationCode)}&status=pending`,
+      pending: `${appUrl}/reserva/sucesso?code=${encodeURIComponent(input.reservationCode)}&status=pending&t=${encodeURIComponent(input.reservationAccessToken)}`,
     },
     auto_return: "approved" as const,
     notification_url: `${appUrl}/api/payments/webhook`,
