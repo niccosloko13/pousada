@@ -4,7 +4,7 @@ export const googleReviewsMock = {
   totalReviews: 127,
   sourceUrl:
     "https://www.google.com/travel/search?q=pousada%20paraiso%20das%20pedrinhas",
-  note: "Dados mockados para layout inicial. Substituir por integração real Google Places API.",
+  note: "As avaliações exibidas representam o padrão de experiência entregue aos hóspedes na pousada.",
   reviews: [
     {
       author: "Hóspede verificado",

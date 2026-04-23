@@ -37,6 +37,7 @@ export type PousadaData = {
   avaliacoes: number;
   destaques: string[];
   comodidades: string[];
+  galeria?: string[];
   quartos: Quarto[];
   imagens_por_secao?: {
     hero: string[];

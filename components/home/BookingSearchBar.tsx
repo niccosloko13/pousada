@@ -77,7 +77,7 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
       }`}
     >
       <div className="mb-2 flex items-center justify-between gap-3 px-1">
-        <p className="text-sm font-bold text-slate-900 md:text-base">Reserve em 30 segundos</p>
+        <p className="text-sm font-bold text-slate-900 md:text-base">Consulte disponibilidade e reserve direto com a pousada</p>
         <div className="flex items-center gap-3 text-[11px] font-semibold text-cyan-700 md:text-xs">
           <span className="inline-flex items-center gap-1">
             <ShieldCheck className="h-3.5 w-3.5" />
@@ -206,7 +206,7 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
       {!compact ? (
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
           <p>Período selecionado: <span className="font-semibold text-slate-700">{dateSummary}</span></p>
-          <p className="font-semibold text-slate-700">Atendimento direto com a pousada</p>
+          <p className="font-semibold text-slate-700">Reserva direta, prática e com atendimento próprio</p>
         </div>
       ) : null}
     </form>

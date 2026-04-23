@@ -90,6 +90,10 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
   const subtotal = typeof breakdown?.subtotal === "number" ? breakdown.subtotal : Number(reservation.amountTotal);
   const discount = typeof breakdown?.discount === "number" ? breakdown.discount : 0;
   const finalTotal = typeof breakdown?.total === "number" ? breakdown.total : Number(reservation.amountTotal);
+  const paymentPlan = (breakdown?.paymentPlan as { signalAmount?: number; remainingAtCheckin?: number } | undefined) ?? undefined;
+  const signalAmount = typeof paymentPlan?.signalAmount === "number" ? paymentPlan.signalAmount : Number((finalTotal * 0.5).toFixed(2));
+  const remainingAtCheckin =
+    typeof paymentPlan?.remainingAtCheckin === "number" ? paymentPlan.remainingAtCheckin : Number((finalTotal - signalAmount).toFixed(2));
   const paymentUi = payment ? paymentStatusLabel(payment.status) : { label: "Sem pagamento registrado", tone: "text-slate-800" as const };
   const reservationUi = reservationStatusLabel(reservation.status);
 
@@ -182,11 +186,21 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
               <p>
                 <span className="font-semibold text-slate-900">Total final:</span> {formatCurrencyBRL(finalTotal)}
               </p>
+              <p>
+                <span className="font-semibold text-slate-900">Sinal da pré-reserva (50%):</span> {formatCurrencyBRL(signalAmount)}
+              </p>
+              <p>
+                <span className="font-semibold text-slate-900">Restante no check-in (50%):</span> {formatCurrencyBRL(remainingAtCheckin)}
+              </p>
               {isTestReservation ? (
                 <p>
                   <span className="font-semibold text-slate-900">Pagamento:</span> Isento para fluxo de teste (voucher GRÁTIS)
                 </p>
-              ) : null}
+              ) : (
+                <p className="rounded-lg border border-cyan-200 bg-cyan-50 px-2 py-1 text-xs text-cyan-900">
+                  Pré-reserva mediante pagamento de 50% do valor total. O saldo restante é pago no check-in.
+                </p>
+              )}
               {!hasValidAccessToken ? (
                 <p className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-900">
                   Visualização parcial por segurança. Use o link completo da reserva para visualizar todos os detalhes.

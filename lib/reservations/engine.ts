@@ -106,6 +106,9 @@ export async function createPendingReservation(input: {
   }
 
   const pricing = computeStayPricing(room, input.checkin, input.checkout, input.adults, input.childrenFree, input.childrenHalf);
+  const total = Number(pricing.total.toFixed(2));
+  const signalAmount = Number((total * 0.5).toFixed(2));
+  const remainingAtCheckin = Number((total - signalAmount).toFixed(2));
   const houseRules = validateHouseRules({
     category: room.category,
     totalGuests,
@@ -172,8 +175,16 @@ export async function createPendingReservation(input: {
         adults: input.adults,
         childrenFree: input.childrenFree,
         childrenHalf: input.childrenHalf,
-        amountTotal: new Prisma.Decimal(pricing.total.toFixed(2)),
-        breakdown: pricing as unknown as Prisma.JsonObject,
+        amountTotal: new Prisma.Decimal(total.toFixed(2)),
+        breakdown: {
+          ...pricing,
+          paymentPlan: {
+            model: "fifty_fifty_pre_reserva",
+            signalPercent: 50,
+            signalAmount,
+            remainingAtCheckin,
+          },
+        } as unknown as Prisma.JsonObject,
         status: "PENDING_PAYMENT",
         expiresAt,
         arrivalTime: input.arrivalTime,
@@ -193,7 +204,7 @@ export async function createPendingReservation(input: {
     const payment = await tx.payment.create({
       data: {
         reservationId: reservation.id,
-        amount: reservation.amountTotal,
+        amount: new Prisma.Decimal(signalAmount.toFixed(2)),
         status: "PENDING",
         provider: "MERCADOPAGO",
       },

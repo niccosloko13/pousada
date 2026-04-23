@@ -8,7 +8,6 @@ import { Hero } from "@/components/home/Hero";
 import { Highlights } from "@/components/home/Highlights";
 import { EnhancedLocationSection } from "@/components/home/EnhancedLocationSection";
 import { RoomsPreview } from "@/components/home/RoomsPreview";
-import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { StickyBookingBar } from "@/components/home/StickyBookingBar";
 import { TrustProofSection } from "@/components/home/TrustProofSection";
 import { TrustSealBand } from "@/components/trust/TrustSealBand";
@@ -25,13 +24,13 @@ export default function HomePage() {
         <section id="busca" className="bg-slate-950 px-4 pb-8 pt-5 md:px-6 md:pb-10">
           <div className="mx-auto w-full max-w-7xl">
             <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
-              Reserva Online Imediata
+              Reserva Direta Em Pedrinhas
             </p>
             <p className="mb-3 text-center text-sm font-medium text-cyan-100">
-              Melhor tarifa direta, confirmação rápida e atendimento da própria pousada.
+              Atendimento da própria pousada, confirmação rápida e experiência pensada para você descansar melhor.
             </p>
             <BookingSearchBar />
-            <TrustSealBand tone="dark" className="mt-5" />
+            <TrustSealBand tone="dark" className="mt-5" showLegalLine={false} />
           </div>
         </section>
         <GoogleReviewsSection />
@@ -43,7 +42,6 @@ export default function HomePage() {
         <GalleryPreview />
         <AmenitiesSection />
         <AttractionsSection />
-        <TestimonialsSection />
         <FinalCTA />
       </main>
       <div className="fixed bottom-3 left-3 right-3 z-40 md:hidden">

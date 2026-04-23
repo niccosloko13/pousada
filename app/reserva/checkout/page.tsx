@@ -153,7 +153,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         <SectionTitle
           eyebrow="Reserva direta"
           title="Checkout seguro e transparente"
-          subtitle="Etapas claras, resumo fixo ao lado e pagamento via Mercado Pago (Pix e cartão)."
+          subtitle="Você visualiza o valor total da hospedagem e paga apenas 50% agora como sinal de pré-reserva."
         />
 
         <CheckoutClient

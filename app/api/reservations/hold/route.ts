@@ -103,7 +103,7 @@ export async function POST(request: Request) {
 
     const preference = await createMercadoPagoPreference({
       title: `Reserva ${reservation.code} - ${room.name}`,
-      amount: Number(reservation.amountTotal),
+      amount: Number(payment.amount),
       reservationCode: reservation.code,
       reservationAccessToken: reservation.publicAccessToken ?? "",
       payerEmail: data.guest.email,
