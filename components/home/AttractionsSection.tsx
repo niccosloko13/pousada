@@ -21,7 +21,7 @@ export function AttractionsSection() {
         {attractions.map((item) => (
           <article key={item.title} className="overflow-hidden rounded-2xl bg-slate-900 text-white">
             <div className="relative h-36 w-full">
-              <Image src={item.image} alt={item.title} fill className="object-cover opacity-80" />
+              <Image src={item.image} alt={item.title} fill sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw" className="object-cover opacity-80" />
             </div>
             <div className="p-5">
             <item.icon className="h-5 w-5 text-amber-300" />

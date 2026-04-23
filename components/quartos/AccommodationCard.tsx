@@ -25,6 +25,7 @@ export function AccommodationCard({ quarto }: AccommodationCardProps) {
           src={quarto.imagem_capa ?? "/fotos_pousada/pousada_001.jpg"}
           alt={quarto.nome}
           fill
+          sizes="(min-width: 768px) 50vw, 100vw"
           className="object-cover transition duration-700 group-hover:scale-[1.03]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />

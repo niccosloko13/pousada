@@ -17,7 +17,7 @@ export default function QuartosPage() {
       <Header />
       <main>
         <section className="relative overflow-hidden bg-slate-950 py-16 text-white">
-          <Image src="/quartos/cama4.jpg" alt="Quartos da pousada" fill className="object-cover opacity-35" />
+          <Image src="/quartos/cama4.jpg" alt="Quartos da pousada" fill sizes="100vw" className="object-cover opacity-35" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 to-cyan-950/65" />
           <div className="relative mx-auto w-full max-w-7xl px-4 md:px-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">Quartos e acomodações</p>

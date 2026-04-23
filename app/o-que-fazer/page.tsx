@@ -43,7 +43,7 @@ export default function OQueFazerPage() {
       <Header />
       <main>
         <section className="relative overflow-hidden bg-slate-950 py-16 text-white">
-          <Image src={locais[0] ?? "/locais/deck.jpg"} alt="Experiências em Ilha Comprida" fill className="object-cover opacity-35" />
+          <Image src={locais[0] ?? "/locais/deck.jpg"} alt="Experiências em Ilha Comprida" fill sizes="100vw" className="object-cover opacity-35" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 to-cyan-950/65" />
           <div className="relative mx-auto w-full max-w-7xl px-4 md:px-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">Experiências em Ilha Comprida</p>
@@ -61,7 +61,7 @@ export default function OQueFazerPage() {
             {experiences.map((experience) => (
               <article key={experience.title} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
                 <div className="relative h-52 w-full">
-                  <Image src={experience.image} alt={experience.title} fill className="object-cover" />
+                  <Image src={experience.image} alt={experience.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
                 </div>
                 <div className="p-5">
                   <p className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-700">

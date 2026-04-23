@@ -9,7 +9,7 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden rounded-t-[2rem] pb-10 pt-7 text-white shadow-[0_-18px_50px_rgba(0,0,0,0.35)] md:pb-16 md:pt-10">
-      <Image src={heroImage} alt="Vista da pousada" fill className="object-cover" priority />
+      <Image src={heroImage} alt="Vista da pousada" fill sizes="100vw" className="object-cover" priority />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/70 to-cyan-900/60" />
       <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 md:grid-cols-2 md:items-center md:px-6">
         <div className="relative z-10 space-y-5">

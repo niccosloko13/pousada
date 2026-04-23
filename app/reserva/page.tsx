@@ -248,7 +248,7 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
                         >
                           <div className="mb-4 grid gap-4 md:grid-cols-[250px_1fr]">
                             <div className="relative h-52 overflow-hidden rounded-2xl ring-1 ring-slate-900/5">
-                              <Image src={cover} alt={room.name} fill className="object-cover" />
+                              <Image src={cover} alt={room.name} fill sizes="(min-width: 768px) 250px, 100vw" className="object-cover" />
                               {isTopPick ? (
                                 <div className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1 text-xs font-extrabold text-cyan-900 shadow-sm">
                                   <Sparkles className="h-4 w-4 text-amber-500" />

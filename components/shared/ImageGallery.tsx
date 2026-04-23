@@ -12,7 +12,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {images.map((image) => (
           <div key={image} className="relative h-52 overflow-hidden rounded-2xl">
-            <Image src={image} alt={title} fill className="object-cover transition hover:scale-105" />
+            <Image src={image} alt={title} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition hover:scale-105" />
           </div>
         ))}
       </div>
