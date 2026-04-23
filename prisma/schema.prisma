@@ -1,0 +1,207 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ReservationStatus {
+  DRAFT
+  PENDING_PAYMENT
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+  CHECKED_IN
+  CHECKED_OUT
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  APPROVED
+  REJECTED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  MERCADOPAGO
+  PAGSEGURO
+}
+
+enum Channel {
+  DIRECT_WEB
+  BOOKING_COM
+  AIRBNB
+  OTHER
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  phone     String
+  cpf       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reservations Reservation[]
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  category    String
+  capacity    Int
+  bedSummary  String
+
+  pricingModel String // por_noite | por_pessoa
+  pricePerNight Decimal? @db.Decimal(10, 2)
+  pricePerPerson Decimal? @db.Decimal(10, 2)
+  breakfastIncluded Boolean @default(true)
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reservations Reservation[]
+  blockedDates BlockedDate[]
+}
+
+model BlockedDate {
+  id        String   @id @default(cuid())
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  startDate DateTime
+  endDate   DateTime
+  reason    String
+  createdAt DateTime @default(now())
+
+  @@index([roomId, startDate, endDate])
+}
+
+model Reservation {
+  id        String   @id @default(cuid())
+  code      String   @unique
+
+  channel Channel @default(DIRECT_WEB)
+  externalId String?
+  externalSource String?
+
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id])
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  checkinAt  DateTime
+  checkoutAt DateTime
+  nights     Int
+
+  adults        Int
+  childrenFree  Int
+  childrenHalf  Int
+
+  amountTotal Decimal @db.Decimal(10, 2)
+  currency    String  @default("BRL")
+  breakdown   Json
+
+  status ReservationStatus @default(PENDING_PAYMENT)
+  expiresAt DateTime?
+
+  arrivalTime String?
+  notes       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  guests        ReservationGuest[]
+  payments      Payment[]
+  paymentEvents PaymentEvent[]
+
+  @@index([roomId, checkinAt, checkoutAt])
+  @@index([status, expiresAt])
+}
+
+model ReservationGuest {
+  id            String @id @default(cuid())
+  reservationId String
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  name  String
+  email String?
+  phone String?
+  age   Int?
+
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id            String @id @default(cuid())
+  reservationId String
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  provider PaymentProvider @default(MERCADOPAGO)
+  status   PaymentStatus   @default(PENDING)
+
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("BRL")
+
+  mpPreferenceId String?
+  mpPaymentId    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  events PaymentEvent[]
+
+  @@index([reservationId])
+  @@index([mpPreferenceId])
+  @@index([mpPaymentId])
+}
+
+model PaymentEvent {
+  id        String @id @default(cuid())
+  paymentId String
+  payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  type    String
+  payload Json
+
+  createdAt DateTime @default(now())
+
+  reservationId String?
+  reservation   Reservation? @relation(fields: [reservationId], references: [id])
+
+  @@index([paymentId])
+}
+
+model ChannelSyncJob {
+  id        String   @id @default(cuid())
+  channel   Channel
+  status    String
+  payload   Json?
+  startedAt DateTime @default(now())
+  finishedAt DateTime?
+  error     String?
+}
+
+model ChannelSyncLog {
+  id        String   @id @default(cuid())
+  channel   Channel
+  message   String
+  payload   Json?
+  createdAt DateTime @default(now())
+}

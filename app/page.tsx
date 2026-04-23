@@ -10,6 +10,8 @@ import { EnhancedLocationSection } from "@/components/home/EnhancedLocationSecti
 import { RoomsPreview } from "@/components/home/RoomsPreview";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { StickyBookingBar } from "@/components/home/StickyBookingBar";
+import { TrustProofSection } from "@/components/home/TrustProofSection";
+import { TrustSealBand } from "@/components/trust/TrustSealBand";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { CTAButton } from "@/components/ui/CTAButton";
@@ -20,7 +22,7 @@ export default function HomePage() {
       <Header />
       <StickyBookingBar />
       <main className="pb-20 md:pb-0">
-        <section id="busca" className="bg-slate-950 px-4 pb-6 pt-5 md:px-6 md:pb-8">
+        <section id="busca" className="bg-slate-950 px-4 pb-8 pt-5 md:px-6 md:pb-10">
           <div className="mx-auto w-full max-w-7xl">
             <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
               Reserva Online Imediata
@@ -29,16 +31,18 @@ export default function HomePage() {
               Melhor tarifa direta, confirmação rápida e atendimento da própria pousada.
             </p>
             <BookingSearchBar />
+            <TrustSealBand tone="dark" className="mt-5" />
           </div>
         </section>
+        <GoogleReviewsSection />
         <Hero />
-        <Highlights />
         <RoomsPreview />
+        <EnhancedLocationSection />
+        <TrustProofSection />
+        <Highlights />
         <GalleryPreview />
         <AmenitiesSection />
         <AttractionsSection />
-        <EnhancedLocationSection />
-        <GoogleReviewsSection />
         <TestimonialsSection />
         <FinalCTA />
       </main>

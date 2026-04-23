@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BookingSearchBar } from "@/components/home/BookingSearchBar";
+import { LegalEntityMini } from "@/components/trust/TrustSealBand";
 
 export function StickyBookingBar() {
   const [visible, setVisible] = useState(false);
@@ -25,6 +26,9 @@ export function StickyBookingBar() {
       <div className="mx-auto max-w-7xl">
         <div className="rounded-3xl border border-white/50 bg-white/80 p-2 backdrop-blur-md">
           <BookingSearchBar compact />
+          <div className="mt-2 px-1 pb-1">
+            <LegalEntityMini tone="light" />
+          </div>
         </div>
       </div>
     </div>

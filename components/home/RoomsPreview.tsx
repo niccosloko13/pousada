@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import pousada from "@/data/pousada.json";
 import { AccommodationCard } from "@/components/quartos/AccommodationCard";
+import { TrustSealBand } from "@/components/trust/TrustSealBand";
 import type { PousadaData } from "@/types/pousada";
 
 export function RoomsPreview() {
@@ -17,6 +18,9 @@ export function RoomsPreview() {
           title="Acomodações com conforto e praticidade"
           subtitle="Ambientes pensados para descanso, com estrutura para estadias curtas ou longas."
         />
+        <div className="mt-6 rounded-2xl border border-slate-200/80 bg-white/80 p-4 shadow-sm">
+          <TrustSealBand tone="light" align="start" showLegalLine={false} />
+        </div>
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {suites.map((quarto) => (
             <AccommodationCard key={quarto.id} quarto={quarto} />

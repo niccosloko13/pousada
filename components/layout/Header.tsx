@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { COMPANY_CNPJ, COMPANY_LEGAL_NAME } from "@/lib/company";
 import { CTAButton } from "@/components/ui/CTAButton";
 
 const navItems = [
@@ -25,6 +26,11 @@ export function Header() {
           <div>
             <p className="text-sm font-extrabold text-slate-900 md:text-base">Pousada em Pedrinhas</p>
             <p className="text-xs text-slate-600">Ilha Comprida - SP</p>
+            <p className="mt-0.5 hidden text-[10px] leading-tight text-slate-500 sm:block">
+              <span className="font-medium text-slate-600">{COMPANY_LEGAL_NAME}</span>
+              <span className="mx-1">·</span>
+              <span className="font-mono">CNPJ {COMPANY_CNPJ}</span>
+            </p>
           </div>
         </Link>
 

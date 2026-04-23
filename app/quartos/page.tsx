@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import pousada from "@/data/pousada.json";
 import { AccommodationCard } from "@/components/quartos/AccommodationCard";
 import { ImageGallery } from "@/components/shared/ImageGallery";
+import { TrustSealBand } from "@/components/trust/TrustSealBand";
 import type { PousadaData } from "@/types/pousada";
 
 export default function QuartosPage() {
@@ -26,6 +27,9 @@ export default function QuartosPage() {
             <p className="mt-3 max-w-2xl text-slate-100">
               Quartos completos e casa para grupos com conforto, praticidade e atendimento direto da pousada.
             </p>
+            <div className="mt-8 max-w-3xl rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
+              <TrustSealBand tone="dark" align="start" />
+            </div>
           </div>
         </section>
 

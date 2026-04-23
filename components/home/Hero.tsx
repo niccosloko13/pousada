@@ -8,7 +8,7 @@ export function Hero() {
   const heroImage = pousadaData.imagens_por_secao?.hero?.[0] ?? "/fotos_pousada/pousada_001.jpg";
 
   return (
-    <section className="relative overflow-hidden pb-10 pt-7 text-white md:pb-16 md:pt-10">
+    <section className="relative overflow-hidden rounded-t-[2rem] pb-10 pt-7 text-white shadow-[0_-18px_50px_rgba(0,0,0,0.35)] md:pb-16 md:pt-10">
       <Image src={heroImage} alt="Vista da pousada" fill className="object-cover" priority />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/70 to-cyan-900/60" />
       <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 md:grid-cols-2 md:items-center md:px-6">
