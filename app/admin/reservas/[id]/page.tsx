@@ -29,6 +29,7 @@ export default async function AdminReservaDetalhePage({ params }: Props) {
   const breakdown = reservation.breakdown as Record<string, unknown> | null;
   const isTestReservation =
     reservation.notes?.includes("[TESTE_GRATIS]") || breakdown?.testReservation === true || breakdown?.voucherCode === "GRATIS";
+  const originLabel = reservation.channel === "BOOKING_COM" ? "BOOKING" : "SITE";
 
   return (
     <div className="space-y-4">
@@ -37,13 +38,22 @@ export default async function AdminReservaDetalhePage({ params }: Props) {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Reserva</p>
             <h1 className="text-2xl font-black text-slate-900">{reservation.code}</h1>
+            <p className="mt-2">
+              <span
+                className={`inline-flex rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
+                  reservation.channel === "BOOKING_COM" ? "bg-indigo-100 text-indigo-900" : "bg-cyan-100 text-cyan-900"
+                }`}
+              >
+                {originLabel}
+              </span>
+            </p>
             {isTestReservation ? (
               <p className="mt-2 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-amber-900">
                 Reserva de teste (voucher GRÁTIS)
               </p>
             ) : null}
             <p className="mt-2 text-sm text-slate-600">
-              Canal: <span className="font-semibold">{reservation.channel}</span>
+              Origem: <span className="font-semibold">{originLabel}</span>
               {reservation.externalId ? (
                 <>
                   {" "}

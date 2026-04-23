@@ -16,6 +16,7 @@ export async function checkAvailability(roomId: string, range: DateRange) {
     where: {
       roomId,
       status: { in: blockingStatuses },
+      // Keep channel-agnostic conflict checks: site + external channels block inventory equally.
       OR: [
         {
           AND: [{ checkinAt: { lt: range.checkout } }, { checkoutAt: { gt: range.checkin } }],
@@ -167,6 +168,8 @@ export async function createPendingReservation(input: {
       data: {
         code,
         publicAccessToken,
+        channel: "DIRECT_WEB",
+        externalId: null,
         roomId: room.id,
         customerId: customer.id,
         checkinAt,
@@ -211,6 +214,103 @@ export async function createPendingReservation(input: {
     });
 
     return { reservation, payment, pricing, room, customer };
+    },
+    {
+      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      maxWait: 5_000,
+      timeout: 15_000,
+    },
+  );
+}
+
+export async function createExternalBookingReservation(input: {
+  roomId: string;
+  externalId: string;
+  checkinAt: Date;
+  checkoutAt: Date;
+  guest: { name: string; email: string; phone: string };
+  adults: number;
+  childrenFree: number;
+  childrenHalf: number;
+  amountTotal: number;
+  notes?: string;
+}) {
+  const checkin = input.checkinAt;
+  const checkout = input.checkoutAt;
+  if (checkout <= checkin) throw new Error("INVALID_DATE_RANGE");
+
+  return prisma.$transaction(
+    async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${input.roomId}))`;
+      const conflictingReservation = await tx.reservation.findFirst({
+        where: {
+          roomId: input.roomId,
+          status: { in: ["PENDING_PAYMENT", "CONFIRMED", "CHECKED_IN"] },
+          checkinAt: { lt: checkout },
+          checkoutAt: { gt: checkin },
+        },
+        select: { id: true },
+      });
+      if (conflictingReservation) throw new Error("ROOM_NOT_AVAILABLE");
+
+      const blockedRange = await tx.blockedDate.findFirst({
+        where: {
+          roomId: input.roomId,
+          startDate: { lt: checkout },
+          endDate: { gt: checkin },
+        },
+        select: { id: true },
+      });
+      if (blockedRange) throw new Error("ROOM_NOT_AVAILABLE");
+
+      const customer = await tx.customer.upsert({
+        where: { email: input.guest.email },
+        create: {
+          email: input.guest.email,
+          name: input.guest.name,
+          phone: input.guest.phone,
+        },
+        update: {
+          name: input.guest.name,
+          phone: input.guest.phone,
+        },
+      });
+
+      const reservation = await tx.reservation.create({
+        data: {
+          code: createSecureReservationCode(),
+          publicAccessToken: crypto.randomBytes(24).toString("hex"),
+          channel: "BOOKING_COM",
+          externalId: input.externalId,
+          externalSource: "booking",
+          roomId: input.roomId,
+          customerId: customer.id,
+          checkinAt: checkin,
+          checkoutAt: checkout,
+          nights: Math.max(1, Math.ceil((checkout.getTime() - checkin.getTime()) / (24 * 60 * 60 * 1000))),
+          adults: input.adults,
+          childrenFree: input.childrenFree,
+          childrenHalf: input.childrenHalf,
+          amountTotal: new Prisma.Decimal(input.amountTotal.toFixed(2)),
+          breakdown: {
+            source: "booking_import",
+            syncedAt: new Date().toISOString(),
+          } as Prisma.JsonObject,
+          status: "CONFIRMED",
+          notes: input.notes,
+        },
+      });
+
+      await tx.reservationGuest.create({
+        data: {
+          reservationId: reservation.id,
+          name: input.guest.name,
+          email: input.guest.email,
+          phone: input.guest.phone,
+        },
+      });
+
+      return reservation;
     },
     {
       isolationLevel: Prisma.TransactionIsolationLevel.Serializable,

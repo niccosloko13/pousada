@@ -154,6 +154,7 @@ model Reservation {
 
   @@index([roomId, checkinAt, checkoutAt])
   @@index([status, expiresAt])
+  @@index([channel, externalId])
 }
 
 model RateLimitBucket {

@@ -107,13 +107,13 @@ export function AccommodationCard({ quarto }: AccommodationCardProps) {
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
           <p className="text-xs font-semibold text-slate-600">Reserva direta com a pousada · confirmação rápida</p>
           <Link
-            href={`/reserva?quarto=${quarto.slug}`}
+            href={`/reserva?quarto=${quarto.slug}&focusSearch=1#reserva-search`}
             className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50"
           >
             Ver datas
           </Link>
           <Link
-            href={`/reserva?quarto=${quarto.slug}`}
+            href={`/reserva?quarto=${quarto.slug}&focusSearch=1#reserva-search`}
             className="inline-flex items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-cyan-700 to-cyan-600 px-5 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-cyan-900/25 transition hover:from-cyan-600 hover:to-cyan-500"
           >
             Reservar agora

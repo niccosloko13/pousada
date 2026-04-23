@@ -56,7 +56,7 @@ export default async function AdminFinanceiroPage() {
                   {payment.reservation.customer.name} · {payment.reservation.room.name}
                 </p>
                 <p className="mt-1 text-xs text-slate-600">
-                  Origem: <span className="font-semibold">{payment.reservation.channel}</span> · Provider:{" "}
+                  Origem: <span className="font-semibold">{payment.reservation.channel === "BOOKING_COM" ? "BOOKING" : "SITE"}</span> · Provider:{" "}
                   <span className="font-semibold">{payment.provider}</span>
                 </p>
               </div>

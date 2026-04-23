@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CircleCheck, Coffee, ShieldCheck, Sparkles, Timer, Wallet } from "lucide-react";
+import { BookingSearchBar } from "@/components/home/BookingSearchBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { CTAButton } from "@/components/ui/CTAButton";
@@ -163,13 +164,24 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
         />
 
         {!searchReady ? (
-          <div className="mt-6 rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-950">
-            <p className="font-bold">Busca incompleta ou período inválido.</p>
-            <p className="mt-2 text-amber-900">
-              Volte para a home e selecione check-in/check-out válidos pelo calendário. O checkout exige datas no formato AAAA-MM-DD e check-out após check-in.
+          <div id="reserva-search" className="mt-6 rounded-3xl border border-cyan-200 bg-white p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-700">Escolha suas datas</p>
+            <h2 className="mt-1 text-xl font-black tracking-tight text-slate-900 md:text-2xl">Informe check-in e check-out para continuar</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Informe suas datas para consultar disponibilidade e valor total da estadia.
             </p>
             <div className="mt-4">
-              <CTAButton href="/">Voltar para a busca</CTAButton>
+              <BookingSearchBar
+                initialValues={{
+                  destino,
+                  adultos,
+                  criancasFree,
+                  criancasHalf,
+                  quartos: Number(quartos) || 1,
+                }}
+                autoFocusDates
+                formId="reserva-guided-search"
+              />
             </div>
           </div>
         ) : null}
@@ -376,7 +388,11 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
 
                             <div className="flex flex-col gap-2 md:items-end">
                               {!searchReady ? (
-                                <CTAButton href="/">Ajustar datas na busca</CTAButton>
+                                <CTAButton
+                                  href={`/reserva?destino=${encodeURIComponent(destino)}&adultos=${adultos}&criancasFree=${criancasFree}&criancasHalf=${criancasHalf}&quartos=${encodeURIComponent(quartos)}&quarto=${encodeURIComponent(room.slug)}&focusSearch=1#reserva-search`}
+                                >
+                                  Ver datas desta acomodação
+                                </CTAButton>
                               ) : (
                                 <CTAButton disabled={!isAvailable} href={`/reserva/checkout?${new URLSearchParams({
                                   quarto: room.slug,
@@ -394,7 +410,7 @@ export default async function ReservaPage({ searchParams }: ReservaPageProps) {
                                 </CTAButton>
                               )}
                               {!searchReady ? (
-                                <p className="text-xs text-slate-600">O checkout exige datas no formato AAAA-MM-DD.</p>
+                                <p className="text-xs text-slate-600">Escolha check-in e check-out para continuar sua reserva.</p>
                               ) : !fitsCapacity ? (
                                 <p className="text-xs text-rose-800">Ajuste o número de hóspedes ou escolha uma categoria maior.</p>
                               ) : !item.passesBusinessRules && item.houseRules.reason === "HOUSE_MIN_GUESTS" ? (

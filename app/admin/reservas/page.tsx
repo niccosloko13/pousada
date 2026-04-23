@@ -71,12 +71,20 @@ export default async function AdminReservasPage({ searchParams }: PageProps) {
           const breakdown = reservation.breakdown as Record<string, unknown> | null;
           const isTestReservation =
             reservation.notes?.includes("[TESTE_GRATIS]") || breakdown?.testReservation === true || breakdown?.voucherCode === "GRATIS";
+          const originLabel = reservation.channel === "BOOKING_COM" ? "BOOKING" : "SITE";
           return (
             <article key={reservation.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="font-extrabold text-slate-900">{reservation.code}</p>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+                        reservation.channel === "BOOKING_COM" ? "bg-indigo-100 text-indigo-900" : "bg-cyan-100 text-cyan-900"
+                      }`}
+                    >
+                      {originLabel}
+                    </span>
                     {isTestReservation ? (
                       <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
                         teste
@@ -96,7 +104,13 @@ export default async function AdminReservasPage({ searchParams }: PageProps) {
                     Status pagamento: <span className="font-semibold">{isTestReservation ? "WAIVED_TEST" : payment?.status ?? "—"}</span>
                   </p>
                   <p className="mt-1 text-xs text-slate-600">
-                    Canal: <span className="font-semibold">{reservation.channel}</span>
+                    Origem: <span className="font-semibold">{originLabel}</span>
+                    {reservation.externalId ? (
+                      <>
+                        {" "}
+                        · External ID: <span className="font-mono font-semibold">{reservation.externalId}</span>
+                      </>
+                    ) : null}
                   </p>
                 </div>
                 <Link href={`/admin/reservas/${reservation.id}`} className="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">

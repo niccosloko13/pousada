@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useRouter } from "next/navigation";
@@ -28,16 +28,25 @@ const initialState: SearchState = {
 
 type BookingSearchBarProps = {
   compact?: boolean;
+  initialValues?: Partial<SearchState>;
+  autoFocusDates?: boolean;
+  formId?: string;
 };
 
-export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
+export function BookingSearchBar({ compact = false, initialValues, autoFocusDates = false, formId }: BookingSearchBarProps) {
   const router = useRouter();
-  const [state, setState] = useState<SearchState>(initialState);
+  const [state, setState] = useState<SearchState>({ ...initialState, ...initialValues });
   const [guestPickerOpen, setGuestPickerOpen] = useState(false);
   const [dateError, setDateError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
   const checkinRef = useRef<HTMLInputElement | null>(null);
   const checkoutRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!autoFocusDates) return;
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    checkinRef.current?.focus();
+  }, [autoFocusDates]);
 
   const guestsLabel = `${state.adultos} adulto${state.adultos > 1 ? "s" : ""}, ${
     state.criancasFree + state.criancasHalf
@@ -91,6 +100,7 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
 
   return (
     <form
+      id={formId}
       ref={formRef}
       onSubmit={onSubmit}
       className={`mx-auto w-full max-w-7xl rounded-3xl border-4 border-amber-400 bg-white shadow-[0_24px_65px_rgba(2,6,23,0.28)] ${
@@ -124,7 +134,11 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
           </span>
         </label>
 
-        <label className="group flex min-h-14 flex-col justify-center rounded-xl border border-slate-300 px-3 transition focus-within:border-cyan-600 focus-within:ring-2 focus-within:ring-cyan-200">
+        <label
+          className={`group flex min-h-14 flex-col justify-center rounded-xl border px-3 transition focus-within:border-cyan-600 focus-within:ring-2 focus-within:ring-cyan-200 ${
+            dateError ? "border-amber-300 bg-amber-50/40" : "border-slate-300"
+          }`}
+        >
           <span className="mb-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">Check-in</span>
           <span className="flex items-center gap-2">
             <CalendarDays className="h-4 w-4 text-cyan-700" />
@@ -142,7 +156,11 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
           </span>
         </label>
 
-        <label className="group flex min-h-14 flex-col justify-center rounded-xl border border-slate-300 px-3 transition focus-within:border-cyan-600 focus-within:ring-2 focus-within:ring-cyan-200">
+        <label
+          className={`group flex min-h-14 flex-col justify-center rounded-xl border px-3 transition focus-within:border-cyan-600 focus-within:ring-2 focus-within:ring-cyan-200 ${
+            dateError ? "border-amber-300 bg-amber-50/40" : "border-slate-300"
+          }`}
+        >
           <span className="mb-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">Check-out</span>
           <span className="flex items-center gap-2">
             <CalendarDays className="h-4 w-4 text-cyan-700" />
