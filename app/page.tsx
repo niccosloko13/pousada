@@ -13,7 +13,6 @@ import { TrustProofSection } from "@/components/home/TrustProofSection";
 import { TrustSealBand } from "@/components/trust/TrustSealBand";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { CTAButton } from "@/components/ui/CTAButton";
 
 export default function HomePage() {
   return (
@@ -44,11 +43,6 @@ export default function HomePage() {
         <AttractionsSection />
         <FinalCTA />
       </main>
-      <div className="fixed bottom-3 left-3 right-3 z-40 md:hidden">
-        <CTAButton href="#busca" className="w-full py-3 text-sm font-extrabold shadow-xl">
-          Ver disponibilidade agora
-        </CTAButton>
-      </div>
       <Footer />
     </div>
   );

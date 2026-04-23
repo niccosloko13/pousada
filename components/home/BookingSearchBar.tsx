@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useRouter } from "next/navigation";
@@ -34,6 +34,10 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
   const router = useRouter();
   const [state, setState] = useState<SearchState>(initialState);
   const [guestPickerOpen, setGuestPickerOpen] = useState(false);
+  const [dateError, setDateError] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const checkinRef = useRef<HTMLInputElement | null>(null);
+  const checkoutRef = useRef<HTMLInputElement | null>(null);
 
   const guestsLabel = `${state.adultos} adulto${state.adultos > 1 ? "s" : ""}, ${
     state.criancasFree + state.criancasHalf
@@ -55,6 +59,22 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const checkinOk = Boolean(state.checkin);
+    const checkoutOk = Boolean(state.checkout);
+    const rangeOk = checkinOk && checkoutOk && new Date(`${state.checkout}T00:00:00`).getTime() > new Date(`${state.checkin}T00:00:00`).getTime();
+
+    if (!checkinOk || !checkoutOk || !rangeOk) {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (!checkinOk) {
+        checkinRef.current?.focus();
+      } else {
+        checkoutRef.current?.focus();
+      }
+      setDateError(!checkinOk || !checkoutOk ? "Selecione check-in e check-out para continuar." : "Confira as datas: o check-out deve ser após o check-in.");
+      return;
+    }
+
+    setDateError(null);
     const params = new URLSearchParams({
       destino: state.destino,
       checkin: state.checkin,
@@ -71,6 +91,7 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
 
   return (
     <form
+      ref={formRef}
       onSubmit={onSubmit}
       className={`mx-auto w-full max-w-7xl rounded-3xl border-4 border-amber-400 bg-white shadow-[0_24px_65px_rgba(2,6,23,0.28)] ${
         compact ? "p-2 md:p-3" : "p-3 md:p-4"
@@ -108,9 +129,13 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
           <span className="flex items-center gap-2">
             <CalendarDays className="h-4 w-4 text-cyan-700" />
             <input
+              ref={checkinRef}
               type="date"
               value={state.checkin}
-              onChange={(e) => setState((old) => ({ ...old, checkin: e.target.value }))}
+              onChange={(e) => {
+                setState((old) => ({ ...old, checkin: e.target.value }));
+                if (dateError) setDateError(null);
+              }}
               className="w-full text-sm font-semibold text-slate-900 outline-none"
               required
             />
@@ -122,9 +147,13 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
           <span className="flex items-center gap-2">
             <CalendarDays className="h-4 w-4 text-cyan-700" />
             <input
+              ref={checkoutRef}
               type="date"
               value={state.checkout}
-              onChange={(e) => setState((old) => ({ ...old, checkout: e.target.value }))}
+              onChange={(e) => {
+                setState((old) => ({ ...old, checkout: e.target.value }));
+                if (dateError) setDateError(null);
+              }}
               className="w-full text-sm font-semibold text-slate-900 outline-none"
               required
             />
@@ -203,6 +232,11 @@ export function BookingSearchBar({ compact = false }: BookingSearchBarProps) {
           Ver disponibilidade
         </button>
       </div>
+      {dateError ? (
+        <p className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900" role="status" aria-live="polite">
+          {dateError}
+        </p>
+      ) : null}
       {!compact ? (
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
           <p>Período selecionado: <span className="font-semibold text-slate-700">{dateSummary}</span></p>
