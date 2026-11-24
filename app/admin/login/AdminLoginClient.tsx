@@ -18,7 +18,7 @@ export function AdminLoginClient({ expiredByIdle }: AdminLoginClientProps) {
   const [csrfReady, setCsrfReady] = useState(false);
 
   async function loadCsrf() {
-    const response = await fetch("/api/admin/auth/csrf", { credentials: "same-origin" });
+    const response = await fetch("/api/admin/auth/csrf", { credentials: "same-origin", cache: "no-store" });
     const json = (await response.json()) as { csrfToken?: string };
     if (json.csrfToken) {
       setCsrfToken(json.csrfToken);
