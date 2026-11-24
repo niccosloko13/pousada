@@ -61,7 +61,7 @@ export function CheckoutClient(props: CheckoutClientProps) {
     const signalDueNow = Number((total * 0.5).toFixed(2));
     const remainingAtCheckin = Number((total - signalDueNow).toFixed(2));
     const isFreeTest = normalizedApplied === "GRATIS";
-    const perNightLine = props.breakdown.pricingModel === "por_pessoa" ? "Tarifa por pessoa (média do grupo)" : "Diária base (casal)";
+    const perNightLine = props.breakdown.pricingModel === "por_pessoa" ? "Tarifa por pessoa por diária" : "Diária base (casal)";
     return { perNightLine, totalHospedagem, discount, total, signalDueNow, remainingAtCheckin, isFreeTest };
   }, [appliedVoucher, props.breakdown.pricingModel, props.breakdown.total]);
 
