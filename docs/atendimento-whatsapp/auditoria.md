@@ -44,7 +44,7 @@ Contagem por ocorrência textual nas mensagens do hóspede e da equipe, inclusiv
 
 ## Regras confirmadas para o atendimento por WhatsApp
 
-A diária do casal é R$ 350 e crianças de até 6 anos não pagam. Informar o sinal confirmado de 40% quando o hóspede perguntar sobre a reserva. Conduzir o atendimento pelo WhatsApp, sem orientar o hóspede a pagar no site. Consultar o calendário antes de oferecer vaga. Confirmar com a recepção o valor de grupos, pacotes de feriado e crianças a partir de 7 anos quando a tarifa aplicável não estiver definida.
+O check-in é a partir das 13h e o check-out é às 15h. A diária do casal é R$ 350 e crianças de até 6 anos não pagam. Informar o sinal confirmado de 40% quando o hóspede perguntar sobre a reserva. Conduzir o atendimento pelo WhatsApp, sem orientar o hóspede a pagar no site. Consultar o calendário antes de oferecer vaga. Confirmar com a recepção o valor de grupos, pacotes de feriado e crianças a partir de 7 anos quando a tarifa aplicável não estiver definida.
 
 
 Para a virada de 2026 para 2027, a recepção confirmou lotação nos dias 30 e 31 de dezembro e 1 e 2 de janeiro. Se a estadia incluir uma dessas noites, explicar a lotação e perguntar qual outra data serve. Consultar disponibilidade antes de oferecer outro período.
@@ -57,7 +57,7 @@ Quando a pessoa pedir fotos, anexar diretamente no WhatsApp a galeria oficial co
 |---|---|---|
 | Sinal e saldo | Foram observados sinais de 30% e 40%. O checkout calculava 50% na data da auditoria. | A pousada confirmou sinal de 40% para novas reservas em 24/11/2026. O saldo é de 60%. Parcelas e meios aceitos ainda dependem de validação. |
 | Tarifa | O catálogo registra R$ 135 de base para casal. O atendimento mencionou diária a partir de R$ 350 e pacotes específicos de fim de ano. | Diária do casal confirmada em R$ 350. Definir exceções por data, unidade, ocupação e validade da cotação. |
-| Horários | Em uma negociação a recepção informou entrada às 12h e saída às 16h. O motor usa 15h e 11h para o intervalo de reserva. | Definir horários de hospedagem, exceções e fuso oficial. |
+| Horários | Em uma negociação a recepção informou entrada às 12h e saída às 16h. O motor usa 15h e 11h para o intervalo de reserva. | Recepção confirmou entrada a partir das 13h e saída às 15h. Verificar o impacto de reservas consecutivas da mesma unidade antes de alterar o intervalo do motor. |
 | Crianças e grupos | A página de reserva apresenta 0–6 grátis, 7–12 meia e 13+ adulto. O cálculo da casa cobra por pessoa, inclusive crianças. A casa tem regra de 10 pessoas e duas noites no mínimo, R$ 100 por pessoa/noite no código. | Aprovar faixas etárias, lotações e condições de grupo por temporada. |
 | Estrutura e acesso | A recepção aceitou van num caso. Houve dúvidas sobre cozinha e proximidade de serviços. | Confirmar porte, estacionamento, cozinha por unidade, acervo de mídia e informações de acesso. |
 
