@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { clearAdminSessionCookie, getAdminSession } from "@/lib/adminAuth";
+import { ADMIN_ACTIVITY_COOKIE, ADMIN_SESSION_COOKIE, getAdminSession } from "@/lib/adminAuth";
 import { writeAdminAuditLog } from "@/lib/adminAudit";
 import { validateAdminCsrf } from "@/lib/adminCsrf";
 
@@ -16,6 +16,15 @@ export async function POST(request: Request) {
     ip: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown",
     userAgent: request.headers.get("user-agent"),
   });
-  await clearAdminSessionCookie();
-  return NextResponse.json({ ok: true });
+  const response = NextResponse.json({ ok: true });
+  const cookieOptions = {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 0,
+  };
+  response.cookies.set(ADMIN_SESSION_COOKIE, "", cookieOptions);
+  response.cookies.set(ADMIN_ACTIVITY_COOKIE, "", cookieOptions);
+  return response;
 }
