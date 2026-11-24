@@ -5,7 +5,7 @@
   "endereco": "52 Rua Alípio Rosa de Oliveira, Ilha Comprida - SP, CEP 11925-000",
   "descricao": "Hospedagem confortável em uma vila de pescadores tranquila, com piscina ao ar livre, atendimento atencioso e acesso à natureza do litoral sul.",
   "link_google_maps": "https://maps.app.goo.gl/6KKtwnu5WcVBCkhL6",
-  "preco_base_diaria_casal": 135,
+  "preco_base_diaria_casal": 350,
   "cafe_da_manha_incluso": true,
   "estrutura_modulos": {
     "reservas": "pronto para integração",
@@ -43,11 +43,15 @@
       "capacidade": "2 a 4 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 4 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama.jpg",
-      "imagens": ["/quartos/cama.jpg", "/quartos/cozinha.jpg", "/quartos/banheiro.jpg"],
+      "imagens": [
+        "/quartos/cama.jpg",
+        "/quartos/cozinha.jpg",
+        "/quartos/banheiro.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -58,7 +62,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Unidade térrea com conforto e praticidade",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 2,
@@ -68,11 +73,15 @@
       "capacidade": "2 a 5 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 5 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama2.jpg",
-      "imagens": ["/quartos/cama2.jpg", "/quartos/cozinha2.jpg", "/quartos/banheiro2.jpg"],
+      "imagens": [
+        "/quartos/cama2.jpg",
+        "/quartos/cozinha2.jpg",
+        "/quartos/banheiro2.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -83,7 +92,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Mais espaço para famílias pequenas",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 3,
@@ -93,11 +103,15 @@
       "capacidade": "2 a 6 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 6 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama3.jpg",
-      "imagens": ["/quartos/cama3.jpg", "/quartos/cozinha.jpg", "/quartos/banheiro.jpg"],
+      "imagens": [
+        "/quartos/cama3.jpg",
+        "/quartos/cozinha.jpg",
+        "/quartos/banheiro.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -108,7 +122,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Opção ampla para grupos",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 4,
@@ -118,11 +133,15 @@
       "capacidade": "2 a 7 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 7 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama4.jpg",
-      "imagens": ["/quartos/cama4.jpg", "/quartos/area.jpg", "/quartos/cozinha2.jpg"],
+      "imagens": [
+        "/quartos/cama4.jpg",
+        "/quartos/area.jpg",
+        "/quartos/cozinha2.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -133,7 +152,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Capacidade elevada no térreo",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 5,
@@ -143,11 +163,15 @@
       "capacidade": "2 a 8 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 8 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama.jpg",
-      "imagens": ["/quartos/cama.jpg", "/quartos/cozinha2.jpg", "/quartos/banheiro2.jpg"],
+      "imagens": [
+        "/quartos/cama.jpg",
+        "/quartos/cozinha2.jpg",
+        "/quartos/banheiro2.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -158,7 +182,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Maior capacidade entre os apartamentos",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 6,
@@ -168,11 +193,15 @@
       "capacidade": "2 a 4 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 4 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama2.jpg",
-      "imagens": ["/quartos/cama2.jpg", "/quartos/cozinha.jpg", "/quartos/banheiro.jpg"],
+      "imagens": [
+        "/quartos/cama2.jpg",
+        "/quartos/cozinha.jpg",
+        "/quartos/banheiro.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -183,7 +212,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Conforto prático para hospedagens longas",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 7,
@@ -193,11 +223,15 @@
       "capacidade": "2 a 5 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 5 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama3.jpg",
-      "imagens": ["/quartos/cama3.jpg", "/quartos/cozinha2.jpg", "/quartos/banheiro2.jpg"],
+      "imagens": [
+        "/quartos/cama3.jpg",
+        "/quartos/cozinha2.jpg",
+        "/quartos/banheiro2.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -208,7 +242,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Privacidade no primeiro andar",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 8,
@@ -218,11 +253,15 @@
       "capacidade": "2 a 6 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 6 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama4.jpg",
-      "imagens": ["/quartos/cama4.jpg", "/quartos/cozinha.jpg", "/quartos/banheiro.jpg"],
+      "imagens": [
+        "/quartos/cama4.jpg",
+        "/quartos/cozinha.jpg",
+        "/quartos/banheiro.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -233,7 +272,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Espaço ampliado para grupos",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 9,
@@ -243,11 +283,15 @@
       "capacidade": "2 a 8 hóspedes",
       "tipo_de_cama": "Configuração flexível para até 8 hóspedes",
       "camas_extras_ou_observacao": "Ajuste de camas conforme ocupação",
-      "preco_por_noite": 135,
-      "preco_modelo": "por_noite",
+      "preco_por_noite": 350,
+      "preco_modelo": "por_pessoa",
       "cafe_da_manha_incluso": true,
       "imagem_capa": "/quartos/cama.jpg",
-      "imagens": ["/quartos/cama.jpg", "/quartos/cozinha.jpg", "/quartos/banheiro2.jpg"],
+      "imagens": [
+        "/quartos/cama.jpg",
+        "/quartos/cozinha.jpg",
+        "/quartos/banheiro2.jpg"
+      ],
       "comodidades": [
         "Ar-condicionado",
         "TV Smart",
@@ -258,7 +302,8 @@
         "Banheiro privativo"
       ],
       "destaque": "Maior unidade no primeiro andar",
-      "tipo": "standard"
+      "tipo": "standard",
+      "preco_por_pessoa": 175
     },
     {
       "id": 10,
@@ -278,7 +323,12 @@
       "cozinha_completa": true,
       "varanda": true,
       "imagem_capa": "/casa/sala.jpg",
-      "imagens": ["/casa/sala.jpg", "/casa/sala2.jpg", "/casa/cozinha.jpg", "/casa/quarto.jpg"],
+      "imagens": [
+        "/casa/sala.jpg",
+        "/casa/sala2.jpg",
+        "/casa/cozinha.jpg",
+        "/casa/quarto.jpg"
+      ],
       "comodidades": [
         "3 quartos",
         "2 banheiros",
@@ -320,10 +370,24 @@
     "Pôr do sol no litoral"
   ],
   "imagens_por_secao": {
-    "hero": ["/fotos_pousada/pousada_001.jpg", "/fotos_pousada/pousada_007.jpg"],
-    "quartos": ["/quartos/cama.jpg", "/quartos/cama2.jpg", "/quartos/cama3.jpg", "/quartos/cozinha.jpg"],
-    "cafe_da_manha": ["/cafedamanha/cafedamanha.jpg", "/cafedamanha/cafedamanha2.jpg"],
-    "lazer": ["/lazer/piscina.jpg", "/lazer/piscina2.jpg"],
+    "hero": [
+      "/fotos_pousada/pousada_001.jpg",
+      "/fotos_pousada/pousada_007.jpg"
+    ],
+    "quartos": [
+      "/quartos/cama.jpg",
+      "/quartos/cama2.jpg",
+      "/quartos/cama3.jpg",
+      "/quartos/cozinha.jpg"
+    ],
+    "cafe_da_manha": [
+      "/cafedamanha/cafedamanha.jpg",
+      "/cafedamanha/cafedamanha2.jpg"
+    ],
+    "lazer": [
+      "/lazer/piscina.jpg",
+      "/lazer/piscina2.jpg"
+    ],
     "locais": [
       "/locais/deck.jpg",
       "/locais/rio.jpg",
@@ -331,6 +395,10 @@
       "/locais/ostras.jpg",
       "/locais/ostras2.jpg"
     ],
-    "casa": ["/casa/sala.jpg", "/casa/cozinha.jpg", "/casa/quarto.jpg"]
+    "casa": [
+      "/casa/sala.jpg",
+      "/casa/cozinha.jpg",
+      "/casa/quarto.jpg"
+    ]
   }
 }
