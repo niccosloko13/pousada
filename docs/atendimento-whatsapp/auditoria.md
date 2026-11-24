@@ -42,12 +42,16 @@ Contagem por ocorrência textual nas mensagens do hóspede e da equipe, inclusiv
 - A confirmação do Mercado Pago consulta o provedor. Vincular o atendimento ao status persistido. Uma foto de comprovante ou a frase “já paguei” deve iniciar verificação.
 - O seed possui uma credencial administrativa padrão de desenvolvimento na ausência de configuração. Validar a configuração de implantação e o processo de seed antes de qualquer operação em produção.
 
+## Regras confirmadas para o atendimento por WhatsApp
+
+A diária do casal é R$ 350 e crianças de até 6 anos não pagam. Informar o sinal confirmado de 40% quando o hóspede perguntar sobre a reserva. Conduzir o atendimento pelo WhatsApp, sem orientar o hóspede a pagar no site. Consultar o calendário antes de oferecer vaga. Confirmar com a recepção o valor de grupos, pacotes de feriado e crianças a partir de 7 anos quando a tarifa aplicável não estiver definida.
+
 ## Decisões comerciais pendentes
 
 | Tema | Evidência | Decisão necessária |
 |---|---|---|
 | Sinal e saldo | Foram observados sinais de 30% e 40%. O checkout calculava 50% na data da auditoria. | A pousada confirmou sinal de 40% para novas reservas em 24/11/2026. O saldo é de 60%. Parcelas e meios aceitos ainda dependem de validação. |
-| Tarifa | O catálogo registra R$ 135 de base para casal. O atendimento mencionou diária a partir de R$ 350 e pacotes específicos de fim de ano. | Definir tabela vigente por data, unidade e ocupação, validade da cotação e exceções de feriado. |
+| Tarifa | O catálogo registra R$ 135 de base para casal. O atendimento mencionou diária a partir de R$ 350 e pacotes específicos de fim de ano. | Diária do casal confirmada em R$ 350. Definir exceções por data, unidade, ocupação e validade da cotação. |
 | Horários | Em uma negociação a recepção informou entrada às 12h e saída às 16h. O motor usa 15h e 11h para o intervalo de reserva. | Definir horários de hospedagem, exceções e fuso oficial. |
 | Crianças e grupos | A página de reserva apresenta 0–6 grátis, 7–12 meia e 13+ adulto. O cálculo da casa cobra por pessoa, inclusive crianças. A casa tem regra de 10 pessoas e duas noites no mínimo, R$ 100 por pessoa/noite no código. | Aprovar faixas etárias, lotações e condições de grupo por temporada. |
 | Estrutura e acesso | A recepção aceitou van num caso. Houve dúvidas sobre cozinha e proximidade de serviços. | Confirmar porte, estacionamento, cozinha por unidade, acervo de mídia e informações de acesso. |
