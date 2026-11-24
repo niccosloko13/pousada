@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { createAdminSessionToken, setAdminSessionCookie } from "@/lib/adminAuth";
+import { ADMIN_ACTIVITY_COOKIE, ADMIN_SESSION_COOKIE, createAdminSessionToken } from "@/lib/adminAuth";
 import { writeAdminAuditLog } from "@/lib/adminAudit";
 import { validateAdminCsrf } from "@/lib/adminCsrf";
 import { assertAdminLoginRateLimit, clearAdminLoginAttempts } from "@/lib/adminRateLimit";
@@ -76,7 +76,6 @@ export async function POST(request: Request) {
 
   await clearAdminLoginAttempts(ip, email);
   const token = await createAdminSessionToken({ userId: user.id, email: user.email });
-  await setAdminSessionCookie(token);
   await writeAdminAuditLog({
     adminUserId: user.id,
     action: "admin.login.success",
@@ -86,5 +85,15 @@ export async function POST(request: Request) {
     metadata: { email: user.email },
   });
 
-  return NextResponse.json({ ok: true });
+  const response = NextResponse.json({ ok: true });
+  const cookieOptions = {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 8,
+  };
+  response.cookies.set(ADMIN_SESSION_COOKIE, token, cookieOptions);
+  response.cookies.set(ADMIN_ACTIVITY_COOKIE, String(Date.now()), cookieOptions);
+  return response;
 }
