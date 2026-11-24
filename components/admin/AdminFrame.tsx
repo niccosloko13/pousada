@@ -21,7 +21,7 @@ export function AdminFrame({ children }: { children: React.ReactNode }) {
   const [csrfToken, setCsrfToken] = useState("");
 
   useEffect(() => {
-    fetch("/api/admin/auth/csrf")
+    fetch("/api/admin/auth/csrf", { credentials: "same-origin", cache: "no-store" })
       .then((response) => response.json())
       .then((json: { csrfToken?: string }) => {
         if (json.csrfToken) setCsrfToken(json.csrfToken);
