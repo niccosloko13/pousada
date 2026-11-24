@@ -49,7 +49,7 @@ A diária do casal é R$ 350 e crianças de até 6 anos não pagam. Informar o s
 
 Para a virada de 2026 para 2027, a recepção confirmou lotação nos dias 30 e 31 de dezembro e 1 e 2 de janeiro. Se a estadia incluir uma dessas noites, explicar a lotação e perguntar qual outra data serve. Consultar disponibilidade antes de oferecer outro período.
 
-Quando a pessoa pedir fotos, enviar as imagens oficiais como mídia na conversa, escolhendo o quarto e os ambientes correspondentes. Quando enviar áudio, transcrever antes de responder. Em caso de trecho inaudível, pedir confirmação apenas desse trecho.
+Quando a pessoa pedir fotos, anexar diretamente no WhatsApp a galeria oficial completa da pousada e as fotos da acomodação solicitada. O endereço do site é uma referência interna para obter as imagens e não deve ser enviado aos hóspedes. Consultar também o grupo interno Reserva pousada para conferir datas, unidades, alterações e cancelamentos. Quando enviar áudio, transcrever antes de responder. Em caso de trecho inaudível, pedir confirmação apenas desse trecho.
 
 ## Decisões comerciais pendentes
 
