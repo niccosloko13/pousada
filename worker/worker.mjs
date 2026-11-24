@@ -20,7 +20,31 @@ export function unpack(m) {
     direction:m.key.fromMe?'out':'in',kind,text,name:m.pushName || null};
 }
 
+async function pairOnly() {
+  const dir = process.env.WA_SESSION_DIR || path.join(homedir(), '.pousada-whatsapp', 'session');
+  await mkdir(dir, { recursive: true, mode: 0o700 });
+  const { state, saveCreds } = await useMultiFileAuthState(dir);
+  const logger = pino({ level: 'silent' });
+  let socket;
+  let stopped = false;
+  const start = () => {
+    if (stopped) return;
+    socket = makeSocket({ auth: state, logger, markOnlineOnConnect: false, syncFullHistory: false });
+    socket.ev.on('creds.update', saveCreds);
+    socket.ev.on('connection.update', update => {
+      if (update.qr && process.stdout.isTTY) qr.generate(update.qr, { small: true });
+      if (update.connection === 'open') console.log('WhatsApp conectado. Sessão salva em:', dir);
+      if (update.connection === 'close' && !stopped) setTimeout(start, 3000);
+    });
+  };
+  process.once('SIGINT', () => { stopped = true; socket?.end(undefined); });
+  process.once('SIGTERM', () => { stopped = true; socket?.end(undefined); });
+  start();
+}
+
 export async function main() {
+  if (process.env.PAIR_ONLY === 'true') return pairOnly();
+   {
   const crypto = vault(process.env.WORKER_DATA_KEY);
   if (!process.env.DATABASE_URL) throw new Error('Defina DATABASE_URL');
   const pool = new pg.Pool({connectionString:process.env.DATABASE_URL, max:3});
