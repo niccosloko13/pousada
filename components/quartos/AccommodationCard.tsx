@@ -13,7 +13,9 @@ export function AccommodationCard({ quarto }: AccommodationCardProps) {
   const isFamilia = quarto.tipo === "familia";
   const priceText = isCasa
     ? `${formatCurrencyBRL(quarto.preco_por_pessoa ?? 140)} / pessoa`
-    : `${formatCurrencyBRL(quarto.preco_por_noite)} / diária`;
+    : quarto.preco_modelo === "por_pessoa"
+      ? `${formatCurrencyBRL(quarto.preco_por_pessoa ?? 175)} / pessoa / diária`
+      : `${formatCurrencyBRL(quarto.preco_por_noite)} / diária`;
 
   const chips = (quarto.comodidades ?? []).slice(0, 6);
 
