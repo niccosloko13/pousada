@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import pousada from "@/data/pousada.json";
+import { formatCurrencyBRL } from "@/lib/reservation";
 import { prisma } from "@/lib/prisma";
 import { isIsoDate, isValidIsoDateRange } from "@/lib/reservations/dateParams";
 import { ensureRoomsSeeded } from "@/lib/reservations/ensureRoomsSeeded";
@@ -141,7 +142,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     breakdown.pricingModel === "por_pessoa"
       ? isHouseCategory(room.category)
         ? `Casa para grupos: R$ 100 por pessoa por noite (mínimo ${HOUSE_MIN_GUESTS} pessoas e ${HOUSE_MIN_NIGHTS} diárias)`
-        : "Modelo de preço por pessoa (grupo)"
+        : `${formatCurrencyBRL(breakdown.baseUnitAmount)} por pessoa por diária`
       : "Modelo de preço por diária";
 
   const mercadoPagoPublicKey = process.env.MERCADOPAGO_PUBLIC_KEY || process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY;
