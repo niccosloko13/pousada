@@ -1,3 +1,4 @@
+import paymentPolicy from "@/data/reservation-payment.json";
 import { Prisma, ReservationStatus } from "@prisma/client";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
@@ -108,7 +109,7 @@ export async function createPendingReservation(input: {
 
   const pricing = computeStayPricing(room, input.checkin, input.checkout, input.adults, input.childrenFree, input.childrenHalf);
   const total = Number(pricing.total.toFixed(2));
-  const signalAmount = Number((total * 0.5).toFixed(2));
+  const signalAmount = Number((total * (paymentPolicy.depositPercent / 100)).toFixed(2));
   const remainingAtCheckin = Number((total - signalAmount).toFixed(2));
   const houseRules = validateHouseRules({
     category: room.category,
@@ -182,8 +183,8 @@ export async function createPendingReservation(input: {
         breakdown: {
           ...pricing,
           paymentPlan: {
-            model: "fifty_fifty_pre_reserva",
-            signalPercent: 50,
+            model: "deposit_balance_at_checkin",
+            signalPercent: paymentPolicy.depositPercent,
             signalAmount,
             remainingAtCheckin,
           },

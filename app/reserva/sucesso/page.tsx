@@ -187,10 +187,10 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
                 <span className="font-semibold text-slate-900">Total final:</span> {formatCurrencyBRL(finalTotal)}
               </p>
               <p>
-                <span className="font-semibold text-slate-900">Sinal da pré-reserva (50%):</span> {formatCurrencyBRL(signalAmount)}
+                <span className="font-semibold text-slate-900">Sinal da pré-reserva:</span> {formatCurrencyBRL(signalAmount)}
               </p>
               <p>
-                <span className="font-semibold text-slate-900">Restante no check-in (50%):</span> {formatCurrencyBRL(remainingAtCheckin)}
+                <span className="font-semibold text-slate-900">Restante no check-in:</span> {formatCurrencyBRL(remainingAtCheckin)}
               </p>
               {isTestReservation ? (
                 <p>
@@ -198,7 +198,7 @@ export default async function ReservaSucessoPage({ searchParams }: PageProps) {
                 </p>
               ) : (
                 <p className="rounded-lg border border-cyan-200 bg-cyan-50 px-2 py-1 text-xs text-cyan-900">
-                  Pré-reserva mediante pagamento de 50% do valor total. O saldo restante é pago no check-in.
+                  O valor do sinal consta no resumo desta reserva. O saldo restante é pago no check-in.
                 </p>
               )}
               {!hasValidAccessToken ? (

@@ -153,7 +153,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         <SectionTitle
           eyebrow="Reserva direta"
           title="Checkout seguro e transparente"
-          subtitle="Você visualiza o valor total da hospedagem e paga apenas 50% agora como sinal de pré-reserva."
+          subtitle="Você visualiza o valor total da hospedagem e paga apenas 40% agora como sinal de pré-reserva."
         />
 
         <CheckoutClient

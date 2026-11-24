@@ -1,5 +1,6 @@
 "use client";
 
+import paymentPolicy from "@/data/reservation-payment.json";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -58,7 +59,7 @@ export function CheckoutClient(props: CheckoutClientProps) {
     const totalHospedagem = props.breakdown.total;
     const discount = normalizedApplied === "GRATIS" ? totalHospedagem : 0;
     const total = Math.max(0, totalHospedagem - discount);
-    const signalDueNow = Number((total * 0.5).toFixed(2));
+    const signalDueNow = Number((total * (paymentPolicy.depositPercent / 100)).toFixed(2));
     const remainingAtCheckin = Number((total - signalDueNow).toFixed(2));
     const isFreeTest = normalizedApplied === "GRATIS";
     const perNightLine = props.breakdown.pricingModel === "por_pessoa" ? "Tarifa por pessoa (média do grupo)" : "Diária base (casal)";
@@ -325,7 +326,7 @@ export function CheckoutClient(props: CheckoutClientProps) {
                   <p className="mt-1 text-sm text-slate-600">
                     {pricing.isFreeTest
                       ? "Voucher GRÁTIS ativo: esta reserva de teste será confirmada sem redirecionamento para pagamento externo."
-                    : "Você verá o valor total da hospedagem, mas paga apenas 50% agora como sinal de pré-reserva. O restante é pago no check-in."}
+                    : "Você verá o valor total da hospedagem, mas paga apenas 40% agora como sinal de pré-reserva. O restante é pago no check-in."}
                   </p>
 
                   <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
@@ -368,7 +369,7 @@ export function CheckoutClient(props: CheckoutClientProps) {
                   <div className="mt-4 rounded-2xl border border-slate-200 bg-white px-4 py-3">
                     <LegalEntityMini tone="light" />
                     <p className="mt-2 text-xs text-slate-600">
-                      Pré-reserva mediante pagamento de 50% do valor total. Os 50% restantes são pagos no check-in.
+                      Pré-reserva mediante pagamento de 40% do valor total. Os 60% restantes são pagos no check-in.
                     </p>
                   </div>
 
@@ -416,7 +417,7 @@ export function CheckoutClient(props: CheckoutClientProps) {
                         className="inline-flex h-12 min-w-[260px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-700 via-cyan-600 to-emerald-600 px-6 text-sm font-black text-white shadow-[0_18px_40px_rgba(8,145,178,0.35)] transition hover:from-cyan-600 hover:via-cyan-500 hover:to-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wallet className="h-4 w-4" />}
-                        {pricing.isFreeTest ? "Confirmar reserva de teste" : "Pagar sinal de pré-reserva (50%)"}
+                        {pricing.isFreeTest ? "Confirmar reserva de teste" : "Pagar sinal de pré-reserva (40%)"}
                       </button>
                     </div>
                   </div>
@@ -424,7 +425,7 @@ export function CheckoutClient(props: CheckoutClientProps) {
                   <p className="mt-3 text-xs text-slate-600">
                     {pricing.isFreeTest
                       ? "Fluxo de teste: o voucher GRÁTIS confirma a reserva sem pagamento externo."
-                    : "Você pagará agora apenas o sinal de 50% no checkout externo do Mercado Pago. O saldo de 50% é pago no check-in."}
+                    : "Você pagará agora apenas o sinal de 40% no checkout externo do Mercado Pago. O saldo de 60% é pago no check-in."}
                   </p>
                 </div>
               </div>
@@ -502,16 +503,16 @@ export function CheckoutClient(props: CheckoutClientProps) {
               ) : null}
 
               <div className="mt-3 rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-800">Sinal para pré-reserva (50%)</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-800">Sinal para pré-reserva (40%)</p>
                 <p className={`mt-1 text-3xl font-black tracking-tight ${pricing.signalDueNow === 0 ? "text-emerald-700" : "text-cyan-900"}`}>
                   {formatCurrencyBRL(pricing.signalDueNow)}
                 </p>
-                <p className="mt-1 text-xs text-cyan-900">Você paga apenas 50% agora para garantir sua pré-reserva.</p>
+                <p className="mt-1 text-xs text-cyan-900">Você paga apenas 40% agora para garantir sua pré-reserva.</p>
               </div>
 
               <div className="mt-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
                 <p className="text-xs text-slate-700">
-                  <span className="font-semibold text-slate-900">Restante no check-in (50%):</span> {formatCurrencyBRL(pricing.remainingAtCheckin)}
+                  <span className="font-semibold text-slate-900">Restante no check-in (60%):</span> {formatCurrencyBRL(pricing.remainingAtCheckin)}
                 </p>
               </div>
 

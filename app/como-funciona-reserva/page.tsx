@@ -7,9 +7,9 @@ const steps = [
   "Escolha a acomodação ideal para seu grupo e período da viagem.",
   "Preencha os dados da estadia e do hóspede principal no checkout.",
   "Visualize o valor total da hospedagem com transparência.",
-  "Pague 50% do total como sinal para garantir a pré-reserva.",
+  "Pague 40% do total como sinal para garantir a pré-reserva.",
   "Receba a confirmação após aprovação do pagamento do sinal.",
-  "Pague os 50% restantes no check-in, diretamente na pousada.",
+  "Pague os 60% restantes no check-in, diretamente na pousada.",
 ];
 
 export default function ComoFuncionaReservaPage() {
@@ -21,7 +21,7 @@ export default function ComoFuncionaReservaPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-800">Reserva online</p>
           <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900 md:text-4xl">Como funciona a pré-reserva</h1>
           <p className="mt-4 text-sm leading-relaxed text-slate-700 md:text-[15px]">
-            Fluxo simples e transparente: você vê o valor total da hospedagem, paga apenas 50% agora e quita o restante no check-in.
+            Fluxo simples e transparente: você vê o valor total da hospedagem, paga apenas 40% agora e quita o restante no check-in.
           </p>
 
           <div className="mt-6 space-y-3">
@@ -38,7 +38,7 @@ export default function ComoFuncionaReservaPage() {
           <div className="mt-6 rounded-2xl border border-cyan-200 bg-cyan-50 p-4">
             <p className="inline-flex items-center gap-2 text-sm font-extrabold text-cyan-950">
               <CheckCircle2 className="h-4 w-4" />
-              Pré-reserva mediante pagamento de 50% do valor total.
+              Pré-reserva mediante pagamento de 40% do valor total.
             </p>
             <p className="mt-2 text-sm text-cyan-900">Saldo restante pago no check-in. Valores e confirmação sujeitos à compensação do sinal.</p>
           </div>

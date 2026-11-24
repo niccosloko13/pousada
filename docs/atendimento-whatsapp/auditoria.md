@@ -46,7 +46,7 @@ Contagem por ocorrência textual nas mensagens do hóspede e da equipe, inclusiv
 
 | Tema | Evidência | Decisão necessária |
 |---|---|---|
-| Sinal e saldo | Foram observados sinais de 30% e 40%. O checkout calcula 50%. | Definir política por canal e período, saldo, vencimento, meios aceitos e parcelamento. |
+| Sinal e saldo | Foram observados sinais de 30% e 40%. O checkout calculava 50% na data da auditoria. | A pousada confirmou sinal de 40% para novas reservas em 24/11/2026. O saldo é de 60%. Parcelas e meios aceitos ainda dependem de validação. |
 | Tarifa | O catálogo registra R$ 135 de base para casal. O atendimento mencionou diária a partir de R$ 350 e pacotes específicos de fim de ano. | Definir tabela vigente por data, unidade e ocupação, validade da cotação e exceções de feriado. |
 | Horários | Em uma negociação a recepção informou entrada às 12h e saída às 16h. O motor usa 15h e 11h para o intervalo de reserva. | Definir horários de hospedagem, exceções e fuso oficial. |
 | Crianças e grupos | A página de reserva apresenta 0–6 grátis, 7–12 meia e 13+ adulto. O cálculo da casa cobra por pessoa, inclusive crianças. A casa tem regra de 10 pessoas e duas noites no mínimo, R$ 100 por pessoa/noite no código. | Aprovar faixas etárias, lotações e condições de grupo por temporada. |

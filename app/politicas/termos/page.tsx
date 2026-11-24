@@ -12,7 +12,7 @@ export default function TermosUsoPage() {
           <div className="mt-6 space-y-4 text-sm leading-relaxed text-slate-700 md:text-[15px]">
             <p>Ao utilizar este site, você concorda com as condições de uso e com as políticas de reserva vigentes.</p>
             <p>O hóspede é responsável pela veracidade dos dados informados durante o processo de reserva.</p>
-            <p>A confirmação da hospedagem depende de disponibilidade e da compensação do sinal de pré-reserva (50% do total).</p>
+            <p>A confirmação da hospedagem depende de disponibilidade e da compensação do sinal de pré-reserva (40% do total).</p>
             <p>Valores apresentados no sistema correspondem à hospedagem contratada para o período e configuração de hóspedes informados.</p>
             <p>Alterações, cancelamentos e remarcações seguem as regras oficiais da pousada e podem ter restrições por período.</p>
             <p>O uso indevido da plataforma pode resultar em bloqueio de acesso e medidas administrativas cabíveis.</p>
