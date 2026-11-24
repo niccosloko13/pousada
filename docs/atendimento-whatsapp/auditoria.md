@@ -18,11 +18,26 @@ O WhatsApp Business indicava 96 conversas não lidas na abertura. A caixa recebe
 
 **Intenção e resultado.** Datas exatas com ocupação, retorno espontâneo, busca de outra data e pergunta de parcelamento após o orçamento são sinais de avanço. A resposta curta sobre lotação levou uma pessoa a explorar o Natal. Isso comprova continuidade do diálogo. Para atribuir conversão, vincular a negociação ao ID de uma reserva confirmada. Respostas sem retorno visível devem ficar como “aguardando hóspede”, sem baixa automática por perda. Não há evidência suficiente para atribuir causalmente mais vendas a uma frase da equipe.
 
+## Cobertura e contagem
+
+A lista foi percorrida até o fim carregado no WhatsApp Web. A contagem sistemática registrou 145 conversas distintas abertas, selecionadas por indícios comerciais na prévia e identificador distinguível na interface. Contatos com nome salvo ou prévias genéricas podem ter ficado de fora. Conversas lidas manualmente não foram somadas em separado, para evitar duplicação. Em 20 das 145 foi identificado o aviso inicial de criptografia. Nas demais foi examinado o histórico carregado, com busca de mensagens anteriores. Não foi possível atestar a integralidade desde o primeiro contato em todas. Nenhuma mensagem foi enviada. Abrir não lidas pode tê-las marcado como lidas, efeito autorizado durante a auditoria.
+
+| Tema presente no histórico | Conversas entre as 145 |
+|---|---:|
+| Preço, diária ou valor | 107 |
+| Datas, período ou horários de estadia | 97 |
+| Casal, adultos, crianças ou quantidade de pessoas | 84 |
+| Fotos, vídeo ou álbum | 32 |
+| Endereço, localização ou proximidade | 28 |
+| Sinal, parcelas ou pagamento | 11 |
+
+Contagem por ocorrência textual nas mensagens do hóspede e da equipe, inclusive saudação automática. Uma conversa pode aparecer em várias linhas. Os números medem temas presentes. Para identificar perguntas dos hóspedes, foram lidos os diálogos e o encadeamento das respostas, descritos na tabela qualitativa. Os números não medem pedidos de orçamento, intenção de compra, perdas ou conversões.
+
 ## O que o sistema já suporta
 
 - O JSON descreve nove apartamentos e uma casa, comodidades, café, mapa e imagens. O seed faz upsert por slug e pode sobrescrever tarifas e metadados. Não executar o seed para inicializar o bot.
 - Prisma e PostgreSQL modelam quartos ativos, capacidades, bloqueios, reservas por canal, cobrança e estados de pagamento. O cliente exige e-mail único. Um interessado no WhatsApp deve existir independentemente de um cadastro de hóspede.
-- O motor de reservas já tem checkAvailability, computeStayPricing e regras da casa. A verificação considera bloqueios e estados pendente de pagamento, confirmado e hospedado. A criação do hold revalida sob trava por quarto e abre uma cobrança. O bot deve usar consulta de leitura na cotação e o fluxo de reserva existente somente após decisão do hóspede.
+- A página app/reserva/page.tsx já combina unidades ativas, capacidade, datas e valor. O motor de reservas já tem checkAvailability, computeStayPricing e regras da casa. A verificação considera bloqueios e estados pendente de pagamento, confirmado e hospedado. A criação do hold revalida sob trava por quarto e abre uma cobrança. O bot deve usar consulta de leitura na cotação e o fluxo de reserva existente somente após decisão do hóspede.
 - A rota de importação do Booking existe. A presença de código não demonstra sincronização ativa nem cobertura das vendas no balcão e por WhatsApp. Confirmar qual calendário a equipe atualiza antes de oferecer vagas.
 - A confirmação do Mercado Pago consulta o provedor. Vincular o atendimento ao status persistido. Uma foto de comprovante ou a frase “já paguei” deve iniciar verificação.
 - O seed possui uma credencial administrativa padrão de desenvolvimento na ausência de configuração. Validar a configuração de implantação e o processo de seed antes de qualquer operação em produção.
@@ -34,8 +49,10 @@ O WhatsApp Business indicava 96 conversas não lidas na abertura. A caixa recebe
 | Sinal e saldo | Foram observados sinais de 30% e 40%. O checkout calcula 50%. | Definir política por canal e período, saldo, vencimento, meios aceitos e parcelamento. |
 | Tarifa | O catálogo registra R$ 135 de base para casal. O atendimento mencionou diária a partir de R$ 350 e pacotes específicos de fim de ano. | Definir tabela vigente por data, unidade e ocupação, validade da cotação e exceções de feriado. |
 | Horários | Em uma negociação a recepção informou entrada às 12h e saída às 16h. O motor usa 15h e 11h para o intervalo de reserva. | Definir horários de hospedagem, exceções e fuso oficial. |
-| Crianças e grupos | O motor distingue crianças grátis e meia. A casa tem regra de 10 pessoas e duas noites no mínimo, R$ 100 por pessoa/noite no código. | Aprovar faixas etárias, lotações e condições de grupo por temporada. |
+| Crianças e grupos | A página de reserva apresenta 0–6 grátis, 7–12 meia e 13+ adulto. O cálculo da casa cobra por pessoa, inclusive crianças. A casa tem regra de 10 pessoas e duas noites no mínimo, R$ 100 por pessoa/noite no código. | Aprovar faixas etárias, lotações e condições de grupo por temporada. |
 | Estrutura e acesso | A recepção aceitou van num caso. Houve dúvidas sobre cozinha e proximidade de serviços. | Confirmar porte, estacionamento, cozinha por unidade, acervo de mídia e informações de acesso. |
+
+A política de cancelamento do site admite remarcação, crédito, devolução ou retenção conforme o caso. Definir prazos e percentuais antes de responder automaticamente a um pedido de cancelamento.
 
 ## Arquitetura e primeiro módulo
 
