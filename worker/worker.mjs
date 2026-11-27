@@ -44,7 +44,6 @@ async function pairOnly() {
 
 export async function main() {
   if (process.env.PAIR_ONLY === 'true') return pairOnly();
-   {
   const crypto = vault(process.env.WORKER_DATA_KEY);
   if (!process.env.DATABASE_URL) throw new Error('Defina DATABASE_URL');
   const pool = new pg.Pool({connectionString:process.env.DATABASE_URL, max:3});
